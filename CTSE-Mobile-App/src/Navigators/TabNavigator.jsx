@@ -10,7 +10,7 @@ const TabNavigator = () => {
       focusedIcon: "home",
       unfocusedIcon: "home-outline",
     },
-    { key: "albums", focusedIcon: "album" },
+    { key: "cart", focusedIcon: "album" },
     { key: "recents", focusedIcon: "history" },
     {
       key: "notifications",
@@ -21,7 +21,7 @@ const TabNavigator = () => {
 
   const renderScene = BottomNavigation.SceneMap({
     home: HomeNavigator,
-    albums: HomeNavigator,
+    cart: HomeNavigator,
     recents: HomeNavigator,
     notifications: HomeNavigator,
   });
