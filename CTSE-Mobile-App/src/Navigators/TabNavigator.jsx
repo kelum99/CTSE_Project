@@ -1,6 +1,7 @@
 import React from "react";
 import { BottomNavigation, Text } from "react-native-paper";
 import HomeNavigator from "./HomeNavigator";
+import PaymentScreen from "../screens/PaymentScreen";
 
 const TabNavigator = () => {
   const [index, setIndex] = React.useState(0);
@@ -10,7 +11,11 @@ const TabNavigator = () => {
       focusedIcon: "home",
       unfocusedIcon: "home-outline",
     },
-    { key: "albums", focusedIcon: "album" },
+    {
+      key: "albums",
+      focusedIcon: "album"
+    },
+
     { key: "recents", focusedIcon: "history" },
     {
       key: "notifications",
@@ -21,7 +26,7 @@ const TabNavigator = () => {
 
   const renderScene = BottomNavigation.SceneMap({
     home: HomeNavigator,
-    albums: HomeNavigator,
+    albums: PaymentScreen,
     recents: HomeNavigator,
     notifications: HomeNavigator,
   });
