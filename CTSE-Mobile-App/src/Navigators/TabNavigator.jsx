@@ -1,5 +1,8 @@
 import React from "react";
 import { BottomNavigation, Text } from "react-native-paper";
+import AddToCart from "../screens/Cart/AddToCart";
+import Cart from "../screens/Cart/Cart";
+import CartNavigator from "./CartNavigator";
 import HomeNavigator from "./HomeNavigator";
 
 const TabNavigator = () => {
@@ -10,8 +13,8 @@ const TabNavigator = () => {
       focusedIcon: "home",
       unfocusedIcon: "home-outline",
     },
-    { key: "cart", focusedIcon: "album" },
-    { key: "recents", focusedIcon: "history" },
+    { key: "album", focusedIcon: "album" },
+    { key: "cart", focusedIcon: "cart", unfocusedIcon: "cart-outline" },
     {
       key: "notifications",
       focusedIcon: "bell",
@@ -21,8 +24,8 @@ const TabNavigator = () => {
 
   const renderScene = BottomNavigation.SceneMap({
     home: HomeNavigator,
-    cart: HomeNavigator,
-    recents: HomeNavigator,
+    album: HomeNavigator,
+    cart: Cart,
     notifications: HomeNavigator,
   });
 
