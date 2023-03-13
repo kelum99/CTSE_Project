@@ -4,6 +4,7 @@ import AddToCart from "../screens/Cart/AddToCart";
 import Cart from "../screens/Cart/Cart";
 import CartNavigator from "./CartNavigator";
 import HomeNavigator from "./HomeNavigator";
+import PaymentScreen from "../screens/PaymentScreen";
 
 const TabNavigator = () => {
   const [index, setIndex] = React.useState(0);
@@ -13,7 +14,11 @@ const TabNavigator = () => {
       focusedIcon: "home",
       unfocusedIcon: "home-outline",
     },
-    { key: "album", focusedIcon: "album" },
+    {
+      key: "albums",
+      focusedIcon: "album",
+      unfocusedIcon: "album-outline"
+    },
     { key: "cart", focusedIcon: "cart", unfocusedIcon: "cart-outline" },
     {
       key: "notifications",
@@ -24,7 +29,8 @@ const TabNavigator = () => {
 
   const renderScene = BottomNavigation.SceneMap({
     home: HomeNavigator,
-    album: HomeNavigator,
+    albums: PaymentScreen,
+    recents: HomeNavigator,
     cart: Cart,
     notifications: HomeNavigator,
   });
