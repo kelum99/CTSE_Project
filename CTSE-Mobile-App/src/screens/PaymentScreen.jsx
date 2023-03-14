@@ -12,9 +12,17 @@ const PaymentScreen = () => {
             <br /><br/>
 
             <Card style={{width: '90%', flex: 1, justifyContent: 'center'}}>
-                <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
+                <Card.Cover style={{marginBottom:10}} source={{ uri: 'https://picsum.photos/700' }} />
 
                 <TextInput
+                    style={{
+                        marginBottom: 10,
+                        width: '80%',
+                        height: 50,
+                        borderRadius: 10,
+                        alignSelf: 'center',
+                        textAlign: 'center',
+                }}
                     mode="outlined"
                     label="Card Holder Name"
                     placeholder="Type something"
@@ -22,30 +30,52 @@ const PaymentScreen = () => {
 
                 <TextInput
                     style={{
-                        paddingHorizontal: 26,
-                    }}
-
+                        marginBottom: 10,
+                        width: '80%',
+                        height: 50,
+                        borderRadius: 40,
+                        alignSelf: 'center',
+                        textAlign: 'center',
+                }}
                     mode="outlined"
                     label="Card Number"
-                    placeholder="Type"
+                    placeholder="XXXX XXXX XXXX XXXX"
                     keyboardType="numeric"
                 />
 
                 <TextInput
+                    style={{
+                        marginBottom: 10,
+                        width: '80%',
+                        height: 50,
+                        borderRadius: 10,
+                        alignSelf: 'center',
+                        textAlign: 'center',
+                    }}
                     mode="outlined"
                     label="Ex Date"
-                    placeholder="Type"
+                    placeholder="xx/xx"
                 />
 
                 <TextInput
+                    style={{
+                        marginBottom: 10,
+                        width: '80%',
+                        height: 50,
+                        borderRadius: 10,
+                        alignSelf: 'center',
+                        textAlign: 'center',
+                        placeholderTextColor: 'red',
+
+                    }}
                     mode="outlined"
                     label="CVV"
-                    placeholder="Type"
+                    placeholder="XXX"
                 />
 
                 <Card.Actions>
 
-                    <Button>Ok</Button>
+                    <Button mode="contained" onPress={(HomeScreen) => console.log('Pressed')}>Ok</Button>
                 </Card.Actions>
             </Card>
 
