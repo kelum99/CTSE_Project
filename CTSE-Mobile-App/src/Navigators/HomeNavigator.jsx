@@ -28,20 +28,21 @@ const HomeNavigator = () => {
       />
 
       <Stack.Screen
-        name="AddProductScreen"
-        options={{
-          headerTitle: "Add Product",
-          headerTitleAlign: "center"
-        }}
-        component={AddProductScreen}
-      />
-      <Stack.Screen
         name="ViewScreen"
         options={{
           headerTitle: "View Product",
           headerTitleAlign: "center"
         }}
         component={ViewScreen}
+      />
+
+      <Stack.Screen
+        name="AddProductScreen"
+        options={{
+          headerTitle: "AddProductScreen",
+          headerTitleAlign: "center"
+        }}
+        component={AddProductScreen}
       />
     </Stack.Navigator>
   );

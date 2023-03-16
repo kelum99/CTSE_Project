@@ -1,18 +1,44 @@
-import React, { useRef, useState } from "react";
-import { SafeAreaView, View } from "react-native";
-import RcFieldForm from "rc-field-form";
-import { Button, HelperText, TextInput } from "react-native-paper";
+import React from "react";
+import { SafeAreaView } from "react-native";
 
-const ViewScreen = () => {
+import { Button, List } from "react-native-paper";
+
+const ViewScreen = ({ navigation }) => {
   return (
     <SafeAreaView>
       <Button
-        icon="camera"
+        onPress={() => navigation.navigate("AddProductScreen")}
         mode="contained"
-        onPress={() => console.log("Pressed")}
       >
-        Press me
+        Add Fruit
       </Button>
+      <List.Item
+        title="First Item"
+        description="Item description"
+        left={props => <List.Icon {...props} icon="folder" />}
+      />
+      <List.Item
+        title="First Item"
+        description="Item description"
+        left={props => <List.Icon {...props} icon="folder" />}
+      />
+      <List.Item
+        title="First Item"
+        description="Item description"
+        left={props => <List.Icon {...props} icon="folder" />}
+      />
+      <List.Item
+        title="First Item"
+        description="Item description"
+        left={props => <List.Icon {...props} icon="folder" />}
+      />
+      <List.Item
+        title="First Item"
+        description="Item description"
+        left={props => <List.Icon {...props} icon="folder" />}
+      />
     </SafeAreaView>
   );
 };
+
+export default ViewScreen;

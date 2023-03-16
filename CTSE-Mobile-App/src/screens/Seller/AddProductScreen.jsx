@@ -3,19 +3,21 @@ import { SafeAreaView, View } from "react-native";
 import RcFieldForm from "rc-field-form";
 import { Button, HelperText, TextInput } from "react-native-paper";
 
-const AddProductScreen = () => {
-  const [validEmail, setIsValidEmail] = useState(true);
-  const ref_password = useRef();
-  const ref_email = useRef();
+const AddProductScreen = ({ navigation }) => {
+  //   const [validEmail, setIsValidEmail] = useState(true);
+
+  const ref_name = useRef();
+  const ref_price = useRef();
+  const ref_description = useRef();
+  const ref_quantity = useRef();
+
   const [form] = RcFieldForm.useForm();
 
   const onSubmit = values => {
     console.log("ss", values);
   };
   return (
-    <SafeAreaView
-      style={{ backgroundColor: "#fff", paddingHorizontal: 10, flex: 1 }}
-    >
+    <SafeAreaView>
       <RcFieldForm
         onFinishFailed={value => {
           console.log("errors", value.errorFields);
@@ -28,51 +30,70 @@ const AddProductScreen = () => {
       >
         <RcFieldForm.Field
           rules={[{ required: true }]}
-          name="email"
+          name="name"
           trigger={"onChangeText"}
           validateTrigger={"onChangeText"}
         >
           <TextInput
-            label={"Email"}
-            autoFocus={true}
-            ref={ref_email}
-            onChangeText={text => {
-              const mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-              if (text.match(mailFormat)) {
-                setIsValidEmail(true);
-              } else {
-                setIsValidEmail(false);
-              }
-            }}
+            label={"Name"}
+            ref={ref_name}
             mode="outlined"
-            placeholder={"Enter Email"}
-            textContentType="emailAddress"
+            placeholder={"Enter Name"}
+            textContentType="name"
           />
         </RcFieldForm.Field>
-        {!validEmail && (
-          <HelperText color={"#EE2F36"}>Email not valid!</HelperText>
-        )}
+
         <RcFieldForm.Field
           rules={[{ required: true }]}
-          name="password"
+          name="price"
           trigger={"onChangeText"}
           validateTrigger={"onChangeText"}
         >
           <TextInput
-            label={"Password"}
-            ref={ref_password}
+            label={"Price"}
+            ref={ref_price}
             mode="outlined"
-            placeholder={"Enter Password"}
-            textContentType="password"
+            placeholder={"Enter Price"}
+            textContentType="price"
+          />
+        </RcFieldForm.Field>
+
+        <RcFieldForm.Field
+          rules={[{ required: true }]}
+          name="description"
+          trigger={"onChangeText"}
+          validateTrigger={"onChangeText"}
+        >
+          <TextInput
+            label={"Description"}
+            ref={ref_description}
+            mode="outlined"
+            placeholder={"Enter Description"}
+            textContentType="description"
+          />
+        </RcFieldForm.Field>
+
+        <RcFieldForm.Field
+          rules={[{ required: true }]}
+          name="quantity"
+          trigger={"onChangeText"}
+          validateTrigger={"onChangeText"}
+        >
+          <TextInput
+            label={"Quantity"}
+            ref={ref_quantity}
+            mode="outlined"
+            placeholder={"Enter Quantity"}
+            textContentType="quantity"
           />
         </RcFieldForm.Field>
       </RcFieldForm>
+
       <Button
-        onPress={() => form.submit()}
-        style={{ marginVertical: 10 }}
+        onPress={() => navigation.navigate("AddProductScreen")}
         mode="contained"
       >
-        Register
+        Add Fruit
       </Button>
     </SafeAreaView>
   );

@@ -12,6 +12,13 @@ const HomeScreen = ({ navigation }) => {
       >
         Test Btn
       </Button>
+
+      <Button
+        onPress={() => navigation.navigate("ViewScreen")}
+        mode="contained"
+      >
+        recents
+      </Button>
     </SafeAreaView>
   );
 };
