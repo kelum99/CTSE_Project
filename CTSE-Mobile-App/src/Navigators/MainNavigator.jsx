@@ -2,20 +2,25 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TabNavigator from "./TabNavigator";
-import CustomerRegisterScreen from "../screens/Register/CustomerRegisterScreen";
-import PaymentScreen from "../screens/Payment/PaymentScreen";
+import AuthNavigator from "./AuthNavigator";
+import SplashScreen from "../screens/SplashScreen";
 
 const Stack = createNativeStackNavigator();
 
 const MainNavigator = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        {/* <Stack.Screen
+      <Stack.Navigator initialRouteName="SplashScreen">
+        <Stack.Screen
           options={{ headerShown: false }}
-          name="CustomerRegister"
-          component={CustomerRegisterScreen}
-        /> */}
+          name="SplashScreen"
+          component={SplashScreen}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="AuthStack"
+          component={AuthNavigator}
+        />
         <Stack.Screen
           options={{ headerShown: false }}
           name="TabNavigation"
