@@ -2,13 +2,17 @@ import React, { useState } from "react";
 import { SafeAreaView, View } from "react-native";
 import RcFieldForm from "rc-field-form";
 import { Button, HelperText, TextInput } from "react-native-paper";
+import { registerCustomer } from "../../services/UserService";
 
-const CustomerRegisterScreen = () => {
+const CustomerRegisterScreen = ({ navigation }) => {
   const [validEmail, setIsValidEmail] = useState(true);
   const [form] = RcFieldForm.useForm();
 
-  const onSubmit = (values) => {
-    console.log("ss", values);
+  const onSubmit = async (values) => {
+    const res = await registerCustomer(values);
+    if (res) {
+      navigation.navigate("LoginScreen");
+    }
   };
   return (
     <SafeAreaView

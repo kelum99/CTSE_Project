@@ -1,13 +1,21 @@
 import React, { useState } from "react";
 import { SafeAreaView, View } from "react-native";
-import { TextInput, Button, HelperText } from "react-native-paper";
+import { TextInput, Button, HelperText, Text } from "react-native-paper";
 import RcFieldForm from "rc-field-form";
-const Login = () => {
+import { login } from "../services/UserService";
+import { updateUser } from "../services/Application";
+
+const Login = ({ navigation }) => {
   const [validEmail, setIsValidEmail] = useState(true);
   const [form] = RcFieldForm.useForm();
+  const newUser = updateUser();
 
-  const onSubmit = (values) => {
-    console.log("ss", values);
+  const onSubmit = async (values) => {
+    const res = await login(values);
+    if (res) {
+      newUser.updateUser(res);
+      navigation.reset({ index: 0, routes: [{ name: "TabNavigation" }] });
+    }
   };
   return (
     <SafeAreaView
@@ -63,6 +71,9 @@ const Login = () => {
             />
           </RcFieldForm.Field>
         </RcFieldForm>
+        <Button mode="text" onPress={() => navigation.navigate("SelectScreen")}>
+          New user? Register
+        </Button>
         <Button
           onPress={() => form.submit()}
           style={{ marginVertical: 30 }}
