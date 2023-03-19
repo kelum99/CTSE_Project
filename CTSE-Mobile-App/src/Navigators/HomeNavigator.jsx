@@ -2,10 +2,8 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../screens/HomeScreen";
 import CustomerRegisterScreen from "../screens/Register/CustomerRegisterScreen";
-import SellerRegisterScreen from "../screens/Register/SellerRegisterScreen";
-import SelectScreen from "../screens/Register/SelectScreen";
-import Login from "../screens/Login";
-import AllUserScreen from "../screens/User Management/AllUsersScreen";
+import AddProductScreen from "../screens/Seller/AddProductScreen";
+import ViewScreen from "../screens/Seller/ViewScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,7 +14,7 @@ const HomeNavigator = () => {
         name="HomeScreen"
         options={{
           headerTitle: "Home",
-          headerTitleAlign: "center",
+          headerTitleAlign: "center"
         }}
         component={HomeScreen}
       />
@@ -24,41 +22,27 @@ const HomeNavigator = () => {
         name="CustomerRegisterScreen"
         options={{
           headerTitle: "Register",
-          headerTitleAlign: "center",
+          headerTitleAlign: "center"
         }}
         component={CustomerRegisterScreen}
       />
+
       <Stack.Screen
-        name="SellerRegisterScreen"
+        name="ViewScreen"
         options={{
-          headerTitle: "Register",
-          headerTitleAlign: "center",
+          headerTitle: "View Product",
+          headerTitleAlign: "center"
         }}
-        component={SellerRegisterScreen}
+        component={ViewScreen}
       />
+
       <Stack.Screen
-        name="SelectScreen"
+        name="AddProductScreen"
         options={{
-          headerTitle: "",
-          headerTitleAlign: "center",
+          headerTitle: "AddProductScreen",
+          headerTitleAlign: "center"
         }}
-        component={SelectScreen}
-      />
-      <Stack.Screen
-        name="LoginScreen"
-        options={{
-          headerTitle: "",
-          headerTitleAlign: "center",
-        }}
-        component={Login}
-      />
-      <Stack.Screen
-        name="AllUserScreen"
-        options={{
-          headerTitle: "User Management",
-          headerTitleAlign: "center",
-        }}
-        component={AllUserScreen}
+        component={AddProductScreen}
       />
     </Stack.Navigator>
   );

@@ -17,6 +17,13 @@ const HomeScreen = ({ navigation }) => {
       <Button style={{ marginVertical: 30 }} onPress={logout} mode="contained">
         LogOut
       </Button>
+
+      <Button
+        onPress={() => navigation.navigate("ViewScreen")}
+        mode="contained"
+      >
+        recents
+      </Button>
     </SafeAreaView>
   );
 };
