@@ -1,6 +1,12 @@
 import React from "react";
 import { BottomNavigation, Text } from "react-native-paper";
+import AddToCart from "../screens/Cart/AddToCart";
+import Cart from "../screens/Cart/Cart";
+import CartNavigator from "./CartNavigator";
 import HomeNavigator from "./HomeNavigator";
+
+import PaymentNavigator from "./PaymentNavigator";
+import PayListScreen from "../screens/Payment/PayListScreen";
 
 const TabNavigator = () => {
   const [index, setIndex] = React.useState(0);
@@ -10,8 +16,12 @@ const TabNavigator = () => {
       focusedIcon: "home",
       unfocusedIcon: "home-outline",
     },
-    { key: "cart", focusedIcon: "album" },
-    { key: "recents", focusedIcon: "history" },
+    {
+      key: "credit",
+      focusedIcon: "credit-card",
+      unfocusedIcon: "credit-card-outline"
+    },
+    { key: "cart", focusedIcon: "cart", unfocusedIcon: "cart-outline" },
     {
       key: "notifications",
       focusedIcon: "bell",
@@ -21,8 +31,9 @@ const TabNavigator = () => {
 
   const renderScene = BottomNavigation.SceneMap({
     home: HomeNavigator,
-    cart: HomeNavigator,
-    recents: HomeNavigator,
+    credit: PayListScreen,
+   recents: HomeNavigator,
+    cart: Cart,
     notifications: HomeNavigator,
   });
 

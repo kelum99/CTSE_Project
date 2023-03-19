@@ -19,7 +19,7 @@ const HomeNavigator = () => {
         component={HomeScreen}
       />
       <Stack.Screen
-        name="RegisterScreen"
+        name="CustomerRegisterScreen"
         options={{
           headerTitle: "Register",
           headerTitleAlign: "center"

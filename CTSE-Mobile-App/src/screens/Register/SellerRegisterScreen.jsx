@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { SafeAreaView, View } from "react-native";
 import RcFieldForm from "rc-field-form";
 import { Button, HelperText, TextInput } from "react-native-paper";
-import { registerCustomer } from "../../services/UserService";
+import { registerSeller } from "../../services/UserService";
 
-const CustomerRegisterScreen = ({ navigation }) => {
+const SellerRegisterScreen = ({ navigation }) => {
   const [validEmail, setIsValidEmail] = useState(true);
   const [form] = RcFieldForm.useForm();
 
   const onSubmit = async (values) => {
-    const res = await registerCustomer(values);
+    const res = await registerSeller(values);
     if (res) {
       navigation.navigate("LoginScreen");
     }
@@ -30,26 +30,26 @@ const CustomerRegisterScreen = ({ navigation }) => {
       >
         <RcFieldForm.Field
           rules={[{ required: true }]}
-          name="firstname"
+          name="name"
           trigger={"onChangeText"}
           validateTrigger={"onChangeText"}
         >
           <TextInput
-            label={"First Name"}
+            label={"Name"}
             mode="outlined"
-            placeholder={"Enter First Name"}
+            placeholder={"Enter Name"}
           />
         </RcFieldForm.Field>
         <RcFieldForm.Field
           rules={[{ required: true }]}
-          name="lastname"
+          name="storeName"
           trigger={"onChangeText"}
           validateTrigger={"onChangeText"}
         >
           <TextInput
-            label={"Last Name"}
+            label={"Store Name"}
             mode="outlined"
-            placeholder={"Enter Last Name"}
+            placeholder={"Enter Store Name"}
           />
         </RcFieldForm.Field>
         <RcFieldForm.Field
@@ -127,4 +127,4 @@ const CustomerRegisterScreen = ({ navigation }) => {
   );
 };
 
-export default CustomerRegisterScreen;
+export default SellerRegisterScreen;

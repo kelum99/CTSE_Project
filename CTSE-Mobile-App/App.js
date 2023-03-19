@@ -1,6 +1,6 @@
 import { MD3LightTheme, Provider as PaperProvider } from "react-native-paper";
 import MainNavigator from "./src/Navigators/MainNavigator";
-
+import { ApplicationProvider } from "./src/services/ApplicationContext";
 const theme = {
   ...MD3LightTheme,
   roundness: 2,
@@ -50,8 +50,10 @@ const theme = {
 
 export default function App() {
   return (
-    <PaperProvider theme={theme}>
-      <MainNavigator />
-    </PaperProvider>
+    <ApplicationProvider>
+      <PaperProvider theme={theme}>
+        <MainNavigator />
+      </PaperProvider>
+    </ApplicationProvider>
   );
 }
