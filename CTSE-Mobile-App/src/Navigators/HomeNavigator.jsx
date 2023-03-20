@@ -1,6 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../screens/HomeScreen";
+import AllUserScreen from "../screens/User Management/AllUsersScreen";
 import CustomerRegisterScreen from "../screens/Register/CustomerRegisterScreen";
 import AddProductScreen from "../screens/Seller/AddProductScreen";
 import ViewScreen from "../screens/Seller/ViewScreen";
@@ -19,6 +20,7 @@ const HomeNavigator = () => {
         component={HomeScreen}
       />
       <Stack.Screen
+        name="AllUserScreen"
         name="CustomerRegisterScreen"
         options={{
           headerTitle: "Register",
