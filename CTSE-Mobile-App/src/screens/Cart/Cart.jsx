@@ -18,7 +18,6 @@ import {
   arrayRemove,
   updateDoc,
 } from "firebase/firestore";
-import { async } from "@firebase/util";
 
 const Item = ({ item }) => {
   const [amount, setAmount] = useState(1);
@@ -56,7 +55,7 @@ const Item = ({ item }) => {
       });
   };
 
-  const updateItems = async () => {
+  const updateItems = async (amt, prc) => {
     const cartRef = doc(db, "cart", user.user.email);
     const cartSnap = await getDoc(cartRef).catch((err) => {
       console.log("errrrrrr", err);
@@ -66,8 +65,26 @@ const Item = ({ item }) => {
       const data = cartSnap.data();
       const itemArray = data.cartItems;
       const index = itemArray.findIndex((cart) => cart.itemId === item.itemId);
-      itemArray[index].qty = amount;
-      itemArray[index].itemPrice = price;
+      itemArray[index].qty = amt;
+      itemArray[index].itemPrice = prc;
+      updateDoc(cartRef, {
+        cartItems: itemArray,
+      });
+    }
+  };
+
+  const updateSelected = async (check) => {
+    const cartRef = doc(db, "cart", user.user.email);
+    const cartSnap = await getDoc(cartRef).catch((err) => {
+      console.log("errrrrrr", err);
+    });
+
+    if (cartSnap.exists()) {
+      const data = cartSnap.data();
+      const itemArray = data.cartItems;
+      const index = itemArray.findIndex((cart) => cart.itemId === item.itemId);
+      itemArray[index].selected = check;
+
       updateDoc(cartRef, {
         cartItems: itemArray,
       });
@@ -90,7 +107,7 @@ const Item = ({ item }) => {
           item.selected = !item.selected;
           setChecked(!checked);
           console.log(checked, item.itemId);
-          calTotal();
+          updateSelected(!checked);
         }}
       />
       <Image
@@ -135,15 +152,9 @@ const Item = ({ item }) => {
               iconColor="#006E00"
               size={30}
               onPress={() => {
-                // setAmount(() => {
-                //   amount - 1;
-                // });
-                // setPrice(() => {
-                //   (amount - 1) * unitPrice;
-                // });
                 setAmount(amount - 1);
                 setPrice((amount - 1) * unitPrice);
-                updateItems();
+                updateItems(item.qty - 1, (item.qty - 1) * unitPrice);
               }}
             />
             <Text style={{ fontSize: 22, paddingTop: "12%" }}>{amount}</Text>
@@ -155,7 +166,7 @@ const Item = ({ item }) => {
               onPress={() => {
                 handlePlus();
                 setPrice((amount + 1) * unitPrice);
-                updateItems();
+                updateItems(item.qty + 1, (item.qty + 1) * unitPrice);
               }}
             />
           </View>
@@ -168,8 +179,9 @@ const Item = ({ item }) => {
 
 const Cart = ({ navigation }) => {
   const [items, setCartItems] = useState([]);
+  const [allSelected, setAllSelected] = useState(false);
   const user = useUserInfo();
-  // const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState();
 
   const fetchCartItems = async () => {
     const cartRef = doc(db, "cart", user.user.email);
@@ -178,28 +190,24 @@ const Cart = ({ navigation }) => {
     if (cartSnap.exists()) {
       setCartItems(cartSnap.data().cartItems);
     } else {
-      Alert.alert("Cart Is Empty! Please Add Items to View the Cart");
+      // Alert.alert("Cart Is Empty! Please Add Items to View the Cart");
     }
   };
 
   useEffect(() => {
     fetchCartItems();
-    // let total = 0;
-    // items.forEach((item) => {
-    //   total += item.itemPrice;
-    // });
-    // setTotal(total);
-    // console.log(total);
-  }, []);
+    calcTotal();
+  }, [items]);
 
-  const total = useMemo(() => {
-    let total = 0;
+  const calcTotal = () => {
+    let tot = 0;
     items.forEach((item) => {
-      total += item.itemPrice;
+      if (item.selected) {
+        tot += item.itemPrice;
+      }
     });
-    console.log(total);
-    return total;
-  }, [total]);
+    setTotal(tot);
+  };
 
   const emptyCart = async () => {
     await deleteDoc(doc(db, "cart", user.user.email))
@@ -212,14 +220,21 @@ const Cart = ({ navigation }) => {
     await fetchCartItems();
   };
 
-  const selectAll = () => {
+  const selectAll = async () => {
     let temp = items.map((item) => {
-      return { ...item, selected: true };
+      return { ...item, selected: !item.selected };
     });
-    setCartItems(temp);
-  };
+    // setCartItems(temp);
+    setAllSelected(!allSelected);
 
-  const calculateTotalPrice = () => {};
+    const cartRef = doc(db, "cart", user.user.email);
+    const cartSnap = await getDoc(cartRef);
+
+    await updateDoc(cartRef, {
+      cartItems: temp,
+    });
+    fetchCartItems();
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -230,8 +245,12 @@ const Cart = ({ navigation }) => {
           padding: "5%",
         }}
       >
-        <Button icon="check" mode="contained" onPress={selectAll}>
-          Select All
+        <Button
+          icon={allSelected ? "close" : "check"}
+          mode="contained"
+          onPress={selectAll}
+        >
+          {allSelected ? "De-Select All" : "Select All"}
         </Button>
         <Button
           icon="cart-variant"

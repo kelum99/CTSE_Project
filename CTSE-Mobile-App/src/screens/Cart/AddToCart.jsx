@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, Image, StyleSheet, View, Alert } from "react-native";
+import { SafeAreaView, Image, StyleSheet, View } from "react-native";
 import { Card, Text, Button, IconButton } from "react-native-paper";
 import { db } from "../../../firebaseConfig";
-import { doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useUserInfo } from "../../services/Application";
 
 const AddToCart = ({ navigation }) => {
@@ -45,16 +45,10 @@ const AddToCart = ({ navigation }) => {
     const cartSnap = await getDoc(cartRef);
 
     if (cartSnap.exists()) {
-      console.log("Document data:", cartSnap.data());
       setCartItems(cartSnap.data().cartItems);
     } else {
       console.log("No such document!");
     }
-
-    // if (!(cartSnap === undefined)) {
-    //   setCartItems(cartSnap.data().cartItems);
-    //   console.log("fff");
-    // }
   };
 
   useEffect(() => {
@@ -64,7 +58,7 @@ const AddToCart = ({ navigation }) => {
   const addToCart = async () => {
     const cartRef = doc(db, "cart", user.user.email);
     const cartSnap = await getDoc(cartRef).catch((err) => {
-      console.log("errrrrrr", err);
+      console.log("error in getting cart", err);
     });
 
     items.push(newItem);
@@ -74,26 +68,12 @@ const AddToCart = ({ navigation }) => {
         cartItems: items,
       });
     } else {
-      console.log("eeeee");
       setDoc(doc(db, "cart", user.user.email), {
         cartId: user.user.email,
         cartItems: item,
       });
     }
     fetchCartItems();
-    // if (cartSnap === undefined) {
-    //   console.log("eeeee");
-    //   setDoc(doc(db, "cart", user.user.email), {
-    //     cartId: user.user.email,
-    //     cartItems: item,
-    //   });
-    // } else {
-    //   updateDoc(cartRef, {
-    //     cartItems: items,
-    //   }).catch((err) => {
-    //     console.log("errrrrrr", err);
-    //   });
-    // }
   };
 
   return (
