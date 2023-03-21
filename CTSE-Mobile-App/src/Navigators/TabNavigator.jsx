@@ -33,7 +33,6 @@ const TabNavigator = () => {
   const renderScene = BottomNavigation.SceneMap({
     home: HomeNavigator,
     credit: PaymentScreen,
-    recents: HomeNavigator,
     cart: Cart,
     notifications: HomeNavigator,
   });
