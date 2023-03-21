@@ -1,49 +1,62 @@
 import React from "react";
-import { BottomNavigation, Text } from "react-native-paper";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import AddToCart from "../screens/Cart/AddToCart";
 import Cart from "../screens/Cart/Cart";
 import CartNavigator from "./CartNavigator";
 import HomeNavigator from "./HomeNavigator";
-
 import PaymentNavigator from "./PaymentNavigator";
 import PayListScreen from "../screens/Payment/PayListScreen";
+import OtherNavigator from "./OtherNavigator";
+
+const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    {
-      key: "home",
-      focusedIcon: "home",
-      unfocusedIcon: "home-outline",
-    },
-    {
-      key: "credit",
-      focusedIcon: "credit-card",
-      unfocusedIcon: "credit-card-outline"
-    },
-    { key: "cart", focusedIcon: "cart", unfocusedIcon: "cart-outline" },
-    {
-      key: "notifications",
-      focusedIcon: "bell",
-      unfocusedIcon: "bell-outline",
-    },
-  ]);
-
-  const renderScene = BottomNavigation.SceneMap({
-    home: HomeNavigator,
-    credit: PayListScreen,
-   recents: HomeNavigator,
-    cart: Cart,
-    notifications: HomeNavigator,
-  });
-
   return (
-    <BottomNavigation
-      labeled={false}
-      navigationState={{ index, routes }}
-      onIndexChange={setIndex}
-      renderScene={renderScene}
-    />
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: "rgb(0, 110, 0)",
+      }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={HomeNavigator}
+        options={{
+          tabBarIcon: ({ color, size }) => {
+            return <Icon name="home" size={size} color={color} />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Cart"
+        component={CartNavigator}
+        options={{
+          tabBarIcon: ({ color, size }) => {
+            return <Icon name="cart" size={size} color={color} />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Products"
+        component={CartNavigator}
+        options={{
+          tabBarIcon: ({ color, size }) => {
+            return <Icon name="fruit-cherries" size={size} color={color} />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={OtherNavigator}
+        options={{
+          tabBarIcon: ({ color, size }) => {
+            return <Icon name="cog" size={size} color={color} />;
+          },
+        }}
+      />
+    </Tab.Navigator>
   );
 };
 

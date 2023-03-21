@@ -12,6 +12,7 @@ const Login = ({ navigation }) => {
 
   const onSubmit = async (values) => {
     const res = await login(values);
+    console.log("ssss", res);
     if (res) {
       newUser.updateUser(res);
       navigation.reset({ index: 0, routes: [{ name: "TabNavigation" }] });

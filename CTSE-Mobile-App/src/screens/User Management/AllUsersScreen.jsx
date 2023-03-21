@@ -95,12 +95,12 @@ const AllUserScreen = ({ navigation }) => {
         <Dialog visible={visible} onDismiss={onClose}>
           <Dialog.Title>Alert</Dialog.Title>
           <Dialog.Content>
-            <Text variant="bodyMedium">This is simple dialog</Text>
+            <Text variant="bodyMedium">Are you sure to remove this user ?</Text>
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={onClose}>Cancel</Button>
             <Button mode="contained" buttonColor="red" onPress={onDelete}>
-              Delete
+              Remove
             </Button>
           </Dialog.Actions>
         </Dialog>
