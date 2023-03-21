@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
 import {
-  List,
   Text,
   ActivityIndicator,
   IconButton,
@@ -8,8 +7,9 @@ import {
   Dialog,
   Portal,
 } from "react-native-paper";
-import { SafeAreaView, View } from "react-native";
+import { SafeAreaView, ScrollView, View } from "react-native";
 import { getAllUsers, deleteUser } from "../../services/UserService";
+import { TouchableWithoutFeedback } from "react-native";
 
 const AllUserScreen = ({ navigation }) => {
   const [users, setUsers] = useState([]);
@@ -51,45 +51,58 @@ const AllUserScreen = ({ navigation }) => {
       {loading ? (
         <ActivityIndicator animating={true} />
       ) : (
-        <List.Section>
+        <ScrollView showsVerticalScrollIndicator={false}>
           {users.length > 0 ? (
             <View>
-              {users.map((user) => (
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    marginVertical: 4,
-                    paddingHorizontal: 8,
-                  }}
-                >
-                  <View
-                    style={{
-                      display: "flex",
-                    }}
+              {users
+                .filter((val) => val.role !== "admin")
+                .map((user) => (
+                  <TouchableWithoutFeedback
+                    onPress={() =>
+                      navigation.navigate("UserProfileScreen", {
+                        admin: true,
+                        userId: user.id,
+                      })
+                    }
                   >
-                    <Text variant="titleMedium">
-                      {user.role === "customer" ? user.firstname : user.name}
-                    </Text>
-                    <Text>{user.role}</Text>
-                  </View>
-                  <IconButton
-                    icon="delete"
-                    iconColor={"red"}
-                    size={20}
-                    onPress={() => {
-                      setVisible(true);
-                      setSelectedUser(user);
-                    }}
-                  />
-                </View>
-              ))}
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        marginVertical: 4,
+                        paddingHorizontal: 8,
+                      }}
+                    >
+                      <View
+                        style={{
+                          display: "flex",
+                        }}
+                      >
+                        <Text variant="titleMedium">
+                          {user.role === "customer"
+                            ? user.firstname
+                            : user.name}
+                        </Text>
+                        <Text>{user.role}</Text>
+                      </View>
+                      <IconButton
+                        icon="delete"
+                        iconColor={"red"}
+                        size={20}
+                        onPress={() => {
+                          setVisible(true);
+                          setSelectedUser(user);
+                        }}
+                      />
+                    </View>
+                  </TouchableWithoutFeedback>
+                ))}
             </View>
           ) : (
             <Text>No users</Text>
           )}
-        </List.Section>
+        </ScrollView>
       )}
       <Portal>
         <Dialog visible={visible} onDismiss={onClose}>

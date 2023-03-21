@@ -11,8 +11,7 @@ const PaymentNavigator = () => {
       <Stack.Screen
         name="PayListScreen"
         options={{
-          headerTitle: "Pay",
-          headerTitleAlign: "center",
+          headerShown: false,
         }}
         component={PayListScreen}
       />
@@ -20,8 +19,7 @@ const PaymentNavigator = () => {
       <Stack.Screen
         name="PaymentScreen"
         options={{
-          headerTitle: "Payment",
-          headerTitleAlign: "center",
+          headerShown: false,
         }}
         component={PaymentScreen}
       />

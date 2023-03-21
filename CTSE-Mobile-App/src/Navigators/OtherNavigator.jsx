@@ -4,6 +4,7 @@ import HomeScreen from "../screens/HomeScreen";
 import AllUserScreen from "../screens/User Management/AllUsersScreen";
 import PaymentNavigator from "./PaymentNavigator";
 import OtherScreen from "../screens/OtherScreen";
+import UserProfile from "../screens/User Management/UserProfile";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,14 @@ const OtherNavigator = () => {
           headerTitleAlign: "center",
         }}
         component={AllUserScreen}
+      />
+      <Stack.Screen
+        name="UserProfileScreen"
+        options={{
+          headerTitle: "User Management",
+          headerTitleAlign: "center",
+        }}
+        component={UserProfile}
       />
       <Stack.Screen
         name="PaymentNavigator"

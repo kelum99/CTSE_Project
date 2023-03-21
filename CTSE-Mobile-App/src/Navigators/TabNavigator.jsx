@@ -1,13 +1,10 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import AddToCart from "../screens/Cart/AddToCart";
-import Cart from "../screens/Cart/Cart";
 import CartNavigator from "./CartNavigator";
 import HomeNavigator from "./HomeNavigator";
-import PaymentNavigator from "./PaymentNavigator";
-import PayListScreen from "../screens/Payment/PayListScreen";
 import OtherNavigator from "./OtherNavigator";
+import UserProfile from "../screens/User Management/UserProfile";
 
 const Tab = createBottomTabNavigator();
 
@@ -39,13 +36,14 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Products"
-        component={CartNavigator}
+        name="Profile"
+        component={UserProfile}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <Icon name="fruit-cherries" size={size} color={color} />;
+            return <Icon name="account" size={size} color={color} />;
           },
         }}
+        initialParams={{ admin: false, userId: undefined }}
       />
       <Tab.Screen
         name="Settings"
