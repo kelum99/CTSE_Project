@@ -2,6 +2,9 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../screens/HomeScreen";
 import AllUserScreen from "../screens/User Management/AllUsersScreen";
+import CustomerRegisterScreen from "../screens/Register/CustomerRegisterScreen";
+import AddProductScreen from "../screens/Seller/AddProductScreen";
+import ViewScreen from "../screens/Seller/ViewScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -12,17 +15,36 @@ const HomeNavigator = () => {
         name="HomeScreen"
         options={{
           headerTitle: "Home",
-          headerTitleAlign: "center",
+          headerTitleAlign: "center"
         }}
         component={HomeScreen}
       />
       <Stack.Screen
         name="AllUserScreen"
+        name="CustomerRegisterScreen"
         options={{
-          headerTitle: "User Management",
-          headerTitleAlign: "center",
+          headerTitle: "Register",
+          headerTitleAlign: "center"
         }}
-        component={AllUserScreen}
+        component={CustomerRegisterScreen}
+      />
+
+      <Stack.Screen
+        name="ViewScreen"
+        options={{
+          headerTitle: "View Product",
+          headerTitleAlign: "center"
+        }}
+        component={ViewScreen}
+      />
+
+      <Stack.Screen
+        name="AddProductScreen"
+        options={{
+          headerTitle: "AddProductScreen",
+          headerTitleAlign: "center"
+        }}
+        component={AddProductScreen}
       />
     </Stack.Navigator>
   );
