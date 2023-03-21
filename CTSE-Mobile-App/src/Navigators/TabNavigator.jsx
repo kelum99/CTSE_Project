@@ -7,6 +7,7 @@ import HomeNavigator from "./HomeNavigator";
 
 import PaymentNavigator from "./PaymentNavigator";
 import PayListScreen from "../screens/Payment/PayListScreen";
+import PaymentScreen from "../screens/Payment/PaymentScreen";
 
 const TabNavigator = () => {
   const [index, setIndex] = React.useState(0);
@@ -31,8 +32,7 @@ const TabNavigator = () => {
 
   const renderScene = BottomNavigation.SceneMap({
     home: HomeNavigator,
-    credit: PayListScreen,
-    recents: HomeNavigator,
+    credit: PaymentScreen,
     cart: Cart,
     notifications: HomeNavigator,
   });
