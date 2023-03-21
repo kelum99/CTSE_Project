@@ -1,11 +1,100 @@
-import React, { useState } from "react";
-import { SafeAreaView, Image, StyleSheet, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { SafeAreaView, Image, StyleSheet, View, Alert } from "react-native";
 import { Card, Text, Button, IconButton } from "react-native-paper";
+import { db } from "../../../firebaseConfig";
+import { doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
+import { useUserInfo } from "../../services/Application";
 
 const AddToCart = ({ navigation }) => {
   const [amount, setAmount] = useState(1);
   const unitPrice = 500.0;
   const [price, setPrice] = useState(unitPrice * amount);
+  const user = useUserInfo();
+  const [items, setCartItems] = useState([]);
+
+  const item = [
+    {
+      itemId: "001",
+      itemName: "Mango",
+      description: "MangoMangoMangoMangoMangoMangoMangoMangoMango",
+      qty: 2,
+      itemPrice: 200,
+      selected: false,
+    },
+    {
+      itemId: "002",
+      itemName: "Banana",
+      description: "BananaBananaBananaBananaBananaBanana",
+      qty: 1,
+      itemPrice: 100,
+      selected: false,
+    },
+  ];
+
+  const newItem = {
+    itemId: "003",
+    itemName: "Strawberry",
+    description: "StrawberryStrawberryStrawberryStrawberryStrawberryStrawberry",
+    qty: amount,
+    itemPrice: price,
+    selected: false,
+  };
+
+  const fetchCartItems = async () => {
+    const cartRef = doc(db, "cart", user.user.email);
+    const cartSnap = await getDoc(cartRef);
+
+    if (cartSnap.exists()) {
+      console.log("Document data:", cartSnap.data());
+      setCartItems(cartSnap.data().cartItems);
+    } else {
+      console.log("No such document!");
+    }
+
+    // if (!(cartSnap === undefined)) {
+    //   setCartItems(cartSnap.data().cartItems);
+    //   console.log("fff");
+    // }
+  };
+
+  useEffect(() => {
+    fetchCartItems();
+  }, []);
+
+  const addToCart = async () => {
+    const cartRef = doc(db, "cart", user.user.email);
+    const cartSnap = await getDoc(cartRef).catch((err) => {
+      console.log("errrrrrr", err);
+    });
+
+    items.push(newItem);
+
+    if (cartSnap.exists()) {
+      updateDoc(cartRef, {
+        cartItems: items,
+      });
+    } else {
+      console.log("eeeee");
+      setDoc(doc(db, "cart", user.user.email), {
+        cartId: user.user.email,
+        cartItems: item,
+      });
+    }
+    fetchCartItems();
+    // if (cartSnap === undefined) {
+    //   console.log("eeeee");
+    //   setDoc(doc(db, "cart", user.user.email), {
+    //     cartId: user.user.email,
+    //     cartItems: item,
+    //   });
+    // } else {
+    //   updateDoc(cartRef, {
+    //     cartItems: items,
+    //   }).catch((err) => {
+    //     console.log("errrrrrr", err);
+    //   });
+    // }
+  };
 
   return (
     <SafeAreaView
@@ -77,6 +166,7 @@ const AddToCart = ({ navigation }) => {
             marginRight: "10%",
             marginTop: "2%",
           }}
+          onPress={addToCart}
         >
           Add To Cart
         </Button>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import {
   SafeAreaView,
   View,
@@ -6,38 +6,73 @@ import {
   StyleSheet,
   StatusBar,
   Image,
+  Alert,
 } from "react-native";
 import { Card, Text, Button, IconButton, Checkbox } from "react-native-paper";
+import { useUserInfo } from "../../services/Application";
+import { db } from "../../../firebaseConfig";
+import {
+  deleteDoc,
+  doc,
+  getDoc,
+  arrayRemove,
+  updateDoc,
+} from "firebase/firestore";
+import { async } from "@firebase/util";
 
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Item",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Second Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Third Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e2944",
-    title: "Fourth Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-445571e2944",
-    title: "Fifth Item",
-  },
-];
-
-const Item = ({ title, id }) => {
+const Item = ({ item }) => {
   const [amount, setAmount] = useState(1);
   const unitPrice = 500.0;
   const [price, setPrice] = useState(unitPrice * amount);
   const [selectedId, setSelectedId] = useState();
   const [checked, setChecked] = React.useState(false);
+  const [total, setTotal] = useState(0);
+  const [deleteItem, setDeleteItem] = useState();
+  const user = useUserInfo();
+  let total2 = 0;
+
+  useEffect(() => {
+    setChecked(item.selected);
+    setAmount(item.qty);
+    setPrice(item.itemPrice);
+  }, []);
+
+  const handlePlus = async () => {
+    setAmount((amount) => amount + 1);
+  };
+
+  const removeCartItem = async () => {
+    const cartRef = doc(db, "cart", user.user.email);
+    const itemToRemove = item;
+
+    await updateDoc(cartRef, {
+      cartItems: arrayRemove(itemToRemove),
+    })
+      .then(() => {
+        console.log("Item removed from cart successfully!");
+      })
+      .catch((error) => {
+        console.error("Error removing item:", error);
+      });
+  };
+
+  const updateItems = async () => {
+    const cartRef = doc(db, "cart", user.user.email);
+    const cartSnap = await getDoc(cartRef).catch((err) => {
+      console.log("errrrrrr", err);
+    });
+
+    if (cartSnap.exists()) {
+      const data = cartSnap.data();
+      const itemArray = data.cartItems;
+      const index = itemArray.findIndex((cart) => cart.itemId === item.itemId);
+      itemArray[index].qty = amount;
+      itemArray[index].itemPrice = price;
+      updateDoc(cartRef, {
+        cartItems: itemArray,
+      });
+    }
+  };
 
   return (
     <View
@@ -50,9 +85,12 @@ const Item = ({ title, id }) => {
       }}
     >
       <Checkbox
-        status={checked ? "checked" : "unchecked"}
+        status={item.selected ? "checked" : "unchecked"}
         onPress={() => {
+          item.selected = !item.selected;
           setChecked(!checked);
+          console.log(checked, item.itemId);
+          calTotal();
         }}
       />
       <Image
@@ -65,7 +103,7 @@ const Item = ({ title, id }) => {
       <View style={styles.cartCard}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <View style={{ padding: "5%" }}>
-            <Text variant="titleMedium">{title}</Text>
+            <Text variant="titleMedium">{item.itemName}</Text>
             <Text variant="bodyMedium">1kg @ Rs 500 </Text>
           </View>
           <IconButton
@@ -73,8 +111,10 @@ const Item = ({ title, id }) => {
             iconColor="#D22B2B"
             size={25}
             onPress={() => {
-              setSelectedId(id);
-              console.log(id);
+              setDeleteItem(item);
+              setSelectedId(item.itemId);
+              console.log(item.itemId);
+              removeCartItem();
             }}
           />
         </View>
@@ -90,13 +130,20 @@ const Item = ({ title, id }) => {
             }}
           >
             <IconButton
-              disabled={amount - 1 < 1}
+              disabled={item.qty - 1 < 1}
               icon="minus-circle"
               iconColor="#006E00"
               size={30}
               onPress={() => {
+                // setAmount(() => {
+                //   amount - 1;
+                // });
+                // setPrice(() => {
+                //   (amount - 1) * unitPrice;
+                // });
                 setAmount(amount - 1);
                 setPrice((amount - 1) * unitPrice);
+                updateItems();
               }}
             />
             <Text style={{ fontSize: 22, paddingTop: "12%" }}>{amount}</Text>
@@ -106,8 +153,9 @@ const Item = ({ title, id }) => {
               iconColor="#006E00"
               size={30}
               onPress={() => {
-                setAmount(amount + 1);
+                handlePlus();
                 setPrice((amount + 1) * unitPrice);
+                updateItems();
               }}
             />
           </View>
@@ -119,6 +167,60 @@ const Item = ({ title, id }) => {
 };
 
 const Cart = ({ navigation }) => {
+  const [items, setCartItems] = useState([]);
+  const user = useUserInfo();
+  // const [total, setTotal] = useState(0);
+
+  const fetchCartItems = async () => {
+    const cartRef = doc(db, "cart", user.user.email);
+    const cartSnap = await getDoc(cartRef);
+
+    if (cartSnap.exists()) {
+      setCartItems(cartSnap.data().cartItems);
+    } else {
+      Alert.alert("Cart Is Empty! Please Add Items to View the Cart");
+    }
+  };
+
+  useEffect(() => {
+    fetchCartItems();
+    // let total = 0;
+    // items.forEach((item) => {
+    //   total += item.itemPrice;
+    // });
+    // setTotal(total);
+    // console.log(total);
+  }, []);
+
+  const total = useMemo(() => {
+    let total = 0;
+    items.forEach((item) => {
+      total += item.itemPrice;
+    });
+    console.log(total);
+    return total;
+  }, [total]);
+
+  const emptyCart = async () => {
+    await deleteDoc(doc(db, "cart", user.user.email))
+      .then(() => {
+        Alert.alert("Cart Emptied !");
+      })
+      .catch((error) => {
+        Alert.alert("Error in deleting cart !");
+      });
+    await fetchCartItems();
+  };
+
+  const selectAll = () => {
+    let temp = items.map((item) => {
+      return { ...item, selected: true };
+    });
+    setCartItems(temp);
+  };
+
+  const calculateTotalPrice = () => {};
+
   return (
     <SafeAreaView style={styles.container}>
       <View
@@ -128,17 +230,13 @@ const Cart = ({ navigation }) => {
           padding: "5%",
         }}
       >
-        <Button
-          icon="check"
-          mode="contained"
-          onPress={() => console.log("Pressed")}
-        >
+        <Button icon="check" mode="contained" onPress={selectAll}>
           Select All
         </Button>
         <Button
           icon="cart-variant"
           mode="contained"
-          onPress={() => console.log("Pressed")}
+          onPress={emptyCart}
           style={{ backgroundColor: "#D22B2B" }}
         >
           Empty Cart
@@ -146,13 +244,13 @@ const Cart = ({ navigation }) => {
       </View>
       <FlatList
         style={styles.cartItemList}
-        data={DATA}
-        renderItem={({ item }) => <Item title={item.title} id={item.id} />}
-        keyExtractor={(item) => item.id}
+        data={items}
+        renderItem={({ item }) => <Item item={item} />}
+        keyExtractor={(item) => item.itemId}
       />
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text style={{ fontSize: 22, padding: "6%" }}>Total Amount </Text>
-        <Text style={{ fontSize: 22, padding: "6%" }}>Rs 1000 </Text>
+        <Text style={{ fontSize: 22, padding: "6%" }}>{total} </Text>
       </View>
       <Button mode="contained" onPress={() => console.log("Pressed")}>
         Checkout
