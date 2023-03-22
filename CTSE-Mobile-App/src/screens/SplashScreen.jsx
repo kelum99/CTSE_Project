@@ -1,8 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect } from "react";
-import { SafeAreaView, View } from "react-native";
+import { SafeAreaView, View, Image } from "react-native";
 import { Text } from "react-native-paper";
-import { useUserInfo } from "../services/Application";
 
 const SplashScreen = ({ navigation }) => {
   const isLogged = async () => {
@@ -24,7 +23,7 @@ const SplashScreen = ({ navigation }) => {
   return (
     <SafeAreaView
       style={{
-        backgroundColor: "#fff",
+        backgroundColor: "#f7f7f7",
         paddingHorizontal: 10,
         flex: 1,
         justifyContent: "center",
@@ -32,6 +31,10 @@ const SplashScreen = ({ navigation }) => {
       }}
     >
       <View>
+        <Image
+          style={{ width: 250, height: 250, marginVertical: 16 }}
+          source={require("../Images/fruit-logo.png")}
+        />
         <Text variant="displayLarge">Fruit Mart</Text>
       </View>
     </SafeAreaView>

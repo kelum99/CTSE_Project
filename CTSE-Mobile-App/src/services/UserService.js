@@ -1,5 +1,14 @@
 import { db } from "../../firebaseConfig";
-import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+  doc,
+  getDoc,
+  deleteDoc,
+} from "firebase/firestore";
 
 export const registerCustomer = async values => {
   try {
@@ -50,6 +59,52 @@ export const login = async values => {
       user = { id: doc.id, user: doc.data() };
     });
     return user;
+  } catch (e) {
+    console.log("error", e);
+    return undefined;
+  }
+};
+
+export const getAllUsers = async () => {
+  try {
+    let users = [];
+    const q = query(collection(db, "users"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      const user = { id: doc.id, ...doc.data() };
+      users.push(user);
+    });
+    return users;
+  } catch (e) {
+    console.log("error", e);
+    return undefined;
+  }
+};
+
+export const getUserById = async (id) => {
+  try {
+    let user;
+    const docRef = doc(db, "users", id);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      user = docSnap.data();
+    } else {
+      console.log("No such document!");
+      user = undefined;
+    }
+    return user;
+  } catch (e) {
+    console.log("error", e);
+    return undefined;
+  }
+};
+
+export const deleteUser = async (id) => {
+  try {
+    await deleteDoc(doc(db, "users", id));
+    return true;
   } catch (e) {
     console.log("error", e);
     return undefined;

@@ -24,36 +24,52 @@ export const AddProduct = async values => {
   }
 };
 
-export const getAllProduct = async () => {
+// export const getAllProduct = async () => {
+//   try {
+//     let product = [];
+//     const q = query(collection(db, "product"));
+//     const querySnapshot = await getDocs(q);
+//     querySnapshot.forEach(doc => {
+//       const fruit = { id: doc.id, ...doc.data() };
+//       product.push(fruit);
+//     });
+//     return product;
+//   } catch (e) {
+//     console.log("error", e);
+//     return undefined;
+//   }
+// };
+
+// export const getProductById = async id => {
+//   try {
+//     let product;
+//     const docRef = doc(db, "product", id);
+//     const docSnap = await getDoc(docRef);
+
+//     if (docSnap.exists()) {
+//       console.log("Document data:", docSnap.data());
+//       product = docSnap.data();
+//     } else {
+//       console.log("No such document!");
+//       product = undefined;
+//     }
+//     return product;
+//   } catch (e) {
+//     console.log("error", e);
+//     return undefined;
+//   }
+// };
+
+export const getAllProductByUserId = async userId => {
   try {
-    let fruit = [];
-    const q = query(collection(db, "product"));
+    let product = [];
+    const q = query(collection(db, "product"), where("userId", "==", userId));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach(doc => {
       const fruit = { id: doc.id, ...doc.data() };
       product.push(fruit);
     });
-    return fruit;
-  } catch (e) {
-    console.log("error", e);
-    return undefined;
-  }
-};
-
-export const getUserById = async id => {
-  try {
-    let user;
-    const docRef = doc(db, "users", id);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-      user = docSnap.data();
-    } else {
-      console.log("No such document!");
-      user = undefined;
-    }
-    return user;
+    return product;
   } catch (e) {
     console.log("error", e);
     return undefined;
