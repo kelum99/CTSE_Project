@@ -5,6 +5,7 @@ import CartNavigator from "./CartNavigator";
 import HomeNavigator from "./HomeNavigator";
 import OtherNavigator from "./OtherNavigator";
 import UserProfile from "../screens/User Management/UserProfile";
+import SellerNavigator from "../Navigators/SellerNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -14,7 +15,7 @@ const TabNavigator = () => {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarActiveTintColor: "rgb(0, 110, 0)",
+        tabBarActiveTintColor: "rgb(0, 110, 0)"
       }}
     >
       <Tab.Screen
@@ -23,7 +24,7 @@ const TabNavigator = () => {
         options={{
           tabBarIcon: ({ color, size }) => {
             return <Icon name="home" size={size} color={color} />;
-          },
+          }
         }}
       />
       <Tab.Screen
@@ -32,7 +33,17 @@ const TabNavigator = () => {
         options={{
           tabBarIcon: ({ color, size }) => {
             return <Icon name="cart" size={size} color={color} />;
-          },
+          }
+        }}
+      />
+
+      <Tab.Screen
+        name="Seller"
+        component={SellerNavigator}
+        options={{
+          tabBarIcon: ({ color, size }) => {
+            return <Icon name="cart" size={size} color={color} />;
+          }
         }}
       />
       <Tab.Screen
@@ -41,7 +52,7 @@ const TabNavigator = () => {
         options={{
           tabBarIcon: ({ color, size }) => {
             return <Icon name="account" size={size} color={color} />;
-          },
+          }
         }}
         initialParams={{ admin: false, userId: undefined }}
       />
@@ -51,7 +62,7 @@ const TabNavigator = () => {
         options={{
           tabBarIcon: ({ color, size }) => {
             return <Icon name="cog" size={size} color={color} />;
-          },
+          }
         }}
       />
     </Tab.Navigator>

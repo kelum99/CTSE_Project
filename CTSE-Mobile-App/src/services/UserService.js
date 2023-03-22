@@ -10,7 +10,7 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 
-export const registerCustomer = async (values) => {
+export const registerCustomer = async values => {
   try {
     const user = await addDoc(collection(db, "users"), {
       firstname: values.firstname,
@@ -19,7 +19,7 @@ export const registerCustomer = async (values) => {
       address: values.address,
       mobile: values.mobile,
       password: values.password,
-      role: "customer",
+      role: "customer"
     });
     return user;
   } catch (err) {
@@ -28,7 +28,7 @@ export const registerCustomer = async (values) => {
   }
 };
 
-export const registerSeller = async (values) => {
+export const registerSeller = async values => {
   try {
     const user = await addDoc(collection(db, "users"), {
       name: values.name,
@@ -37,7 +37,7 @@ export const registerSeller = async (values) => {
       address: values.address,
       mobile: values.mobile,
       password: values.password,
-      role: "seller",
+      role: "seller"
     });
     return user;
   } catch (err) {
@@ -46,7 +46,7 @@ export const registerSeller = async (values) => {
   }
 };
 
-export const login = async (values) => {
+export const login = async values => {
   try {
     let user;
     const q = query(
@@ -55,7 +55,7 @@ export const login = async (values) => {
       where("password", "==", values.password)
     );
     const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
+    querySnapshot.forEach(doc => {
       user = { id: doc.id, user: doc.data() };
     });
     return user;
