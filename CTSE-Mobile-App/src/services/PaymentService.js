@@ -1,5 +1,5 @@
 import {db} from "../../firebaseConfig";
-import {collection, addDoc, query, where, getDocs, doc, getDoc, deleteDoc} from "firebase/firestore";
+import {collection, addDoc, query, where, getDocs, doc, getDoc, deleteDoc, updateDoc} from "firebase/firestore";
 
 
 export const paymentCustomer = async (values) => {
@@ -52,6 +52,18 @@ export const getPaymentById = async (id) => {
         return undefined;
     }
 };
+
+export const updatePayment = async (id, updates) => {
+    try {
+        const docRef = doc(db, "payments", id);
+        await updateDoc(docRef, updates);
+        return true;
+    } catch (e) {
+        console.log("error", e);
+        return undefined;
+    }
+};
+
 
 export const deletePayment = async (id) => {
     try {
