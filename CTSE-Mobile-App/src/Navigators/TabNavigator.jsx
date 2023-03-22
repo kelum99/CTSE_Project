@@ -7,6 +7,7 @@ import HomeNavigator from "./HomeNavigator";
 
 import PaymentNavigator from "./PaymentNavigator";
 import PayListScreen from "../screens/Payment/PayListScreen";
+import SellerNavigator from "./SellerNavigator";
 
 const TabNavigator = () => {
   const [index, setIndex] = React.useState(0);
@@ -14,7 +15,7 @@ const TabNavigator = () => {
     {
       key: "home",
       focusedIcon: "home",
-      unfocusedIcon: "home-outline",
+      unfocusedIcon: "home-outline"
     },
     {
       key: "credit",
@@ -25,16 +26,15 @@ const TabNavigator = () => {
     {
       key: "notifications",
       focusedIcon: "bell",
-      unfocusedIcon: "bell-outline",
-    },
+      unfocusedIcon: "bell-outline"
+    }
   ]);
 
   const renderScene = BottomNavigation.SceneMap({
     home: HomeNavigator,
     credit: PayListScreen,
-   recents: HomeNavigator,
     cart: Cart,
-    notifications: HomeNavigator,
+    notifications: SellerNavigator
   });
 
   return (

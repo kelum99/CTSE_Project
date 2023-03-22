@@ -2,10 +2,10 @@ import React, { useRef, useState } from "react";
 import { SafeAreaView, View } from "react-native";
 import RcFieldForm from "rc-field-form";
 import { Button, HelperText, TextInput } from "react-native-paper";
-
+import { AddProduct } from "../../services/SellerService";
+import { useUserInfo } from "../../services/Application";
 const AddProductScreen = ({ navigation }) => {
-  //   const [validEmail, setIsValidEmail] = useState(true);
-
+  const user = useUserInfo();
   const ref_name = useRef();
   const ref_price = useRef();
   const ref_description = useRef();
@@ -13,11 +13,18 @@ const AddProductScreen = ({ navigation }) => {
 
   const [form] = RcFieldForm.useForm();
 
-  const onSubmit = values => {
-    console.log("ss", values);
+  const onSubmit = async values => {
+    const product = { ...values, userId: user.id };
+    const res = await AddProduct(product);
+    if (res) {
+      navigation.navigate("ViewScreen");
+    }
   };
+
   return (
-    <SafeAreaView>
+    <SafeAreaView
+      style={{ backgroundColor: "#fff", paddingHorizontal: 10, flex: 1 }}
+    >
       <RcFieldForm
         onFinishFailed={value => {
           console.log("errors", value.errorFields);
@@ -39,7 +46,6 @@ const AddProductScreen = ({ navigation }) => {
             ref={ref_name}
             mode="outlined"
             placeholder={"Enter Name"}
-            textContentType="name"
           />
         </RcFieldForm.Field>
 
@@ -54,7 +60,6 @@ const AddProductScreen = ({ navigation }) => {
             ref={ref_price}
             mode="outlined"
             placeholder={"Enter Price"}
-            textContentType="price"
           />
         </RcFieldForm.Field>
 
@@ -69,7 +74,6 @@ const AddProductScreen = ({ navigation }) => {
             ref={ref_description}
             mode="outlined"
             placeholder={"Enter Description"}
-            textContentType="description"
           />
         </RcFieldForm.Field>
 
@@ -84,13 +88,13 @@ const AddProductScreen = ({ navigation }) => {
             ref={ref_quantity}
             mode="outlined"
             placeholder={"Enter Quantity"}
-            textContentType="quantity"
           />
         </RcFieldForm.Field>
       </RcFieldForm>
 
       <Button
-        onPress={() => navigation.navigate("AddProductScreen")}
+        style={{ marginVertical: 30 }}
+        onPress={() => form.submit()}
         mode="contained"
       >
         Add Fruit
