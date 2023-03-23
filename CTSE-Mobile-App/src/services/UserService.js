@@ -8,6 +8,7 @@ import {
   doc,
   getDoc,
   deleteDoc,
+  updateDoc,
 } from "firebase/firestore";
 
 export const registerCustomer = async (values) => {
@@ -104,6 +105,16 @@ export const getUserById = async (id) => {
 export const deleteUser = async (id) => {
   try {
     await deleteDoc(doc(db, "users", id));
+    return true;
+  } catch (e) {
+    console.log("error", e);
+    return undefined;
+  }
+};
+
+export const updateUser = async (id, values) => {
+  try {
+    await updateDoc(doc(db, "users", id), values);
     return true;
   } catch (e) {
     console.log("error", e);
