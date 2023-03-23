@@ -53,6 +53,11 @@ const PayListScreen = ({ navigation }) => {
     setLoading(false);
   };
 
+  const handleUpdatePayment = (payment) => {
+    setSelectedPayment(payment);
+    navigation.navigate("PaymentScreen", { payment });
+  };
+
   const handleDeletePayment = async (payment) => {
     const deleted = await deletePayment(payment.id);
     if (deleted) {
@@ -67,28 +72,32 @@ const PayListScreen = ({ navigation }) => {
   }, []);
 
   const renderItem = ({ item }) => (
-    <Card style={styles.card}>
-      <Card.Title title={item.CardHolderName} />
-      <Card.Content>
-        <Text>Card Number: {item.CardNumber}</Text>
-        <Text>Ex Date: {item.ExpiryDate}</Text>
-        <Text>CVV: {item.CVV}</Text>
-      </Card.Content>
-      <Card.Actions>
-        <Button
-          style={styles.button}
-          onPress={() => {
-            setSelectedPayment(item);
-            setVisible(true);
-          }}
-        >
-          Delete
-        </Button>
-        {/*<Button>*/}
-        {/*    Update*/}
-        {/*</Button>*/}
-      </Card.Actions>
-    </Card>
+    <View style={{ paddingBottom: 10 }}>
+      <Card style={styles.card}>
+        <Card.Title title={item.CardHolderName} />
+        <Card.Content>
+          <Text>Card Number: {item.CardNumber}</Text>
+          <Text>Ex Date: {item.ExpiryDate}</Text>
+          <Text>CVV: {item.CVV}</Text>
+        </Card.Content>
+        <Card.Actions>
+          <Button
+            style={styles.button}
+            onPress={() => {
+              setSelectedPayment(item);
+              setVisible(true);
+            }}
+          >
+            Delete
+          </Button>
+
+          <Button onPress={() => handleUpdatePayment(item)}>Update</Button>
+          {/*<Button>*/}
+          {/*    Update*/}
+          {/*</Button>*/}
+        </Card.Actions>
+      </Card>
+    </View>
   );
 
   return (
@@ -120,7 +129,7 @@ const PayListScreen = ({ navigation }) => {
         <Dialog visible={visible} onDismiss={() => setVisible(false)}>
           <Dialog.Title>Delete Payment</Dialog.Title>
           <Dialog.Content>
-            <Text>Are you sure you want to delete this payment?</Text>
+            <Text>Are you sure you want to delete this card details?</Text>
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={() => setVisible(false)}>Cancel</Button>

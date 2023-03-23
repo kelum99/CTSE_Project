@@ -1,30 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView, View } from "react-native";
-import { Button, Text, Card, TextInput, HelperText } from "react-native-paper";
-import RcFieldForm, { Field } from "rc-field-form";
-import { paymentCustomer } from "../../services/PaymentService";
+import { Button, Text, Card, TextInput } from "react-native-paper";
+import RcFieldForm from "rc-field-form";
+import {
+  updatePaymentCustomer,
+  getPaymentCustomerById,
+} from "../../services/PaymentService";
 
-const PaymentScreen = ({ navigation }) => {
-  const [validCardNumber, setIsValidCardNumber] = useState(true);
+const UpdatePaymentScreen = ({ navigation, route }) => {
   const [form] = RcFieldForm.useForm();
+  const [payment, setPayment] = useState({});
+
+  useEffect(() => {
+    // Fetch payment details based on the ID passed in through the navigation route
+    const fetchPaymentDetails = async () => {
+      const res = await getPaymentCustomerById(route.params.paymentId);
+      setPayment(res);
+    };
+    fetchPaymentDetails();
+  }, []);
 
   const onSubmit = async (values) => {
-    try {
-      await form.validateFields();
-      const res = await paymentCustomer(values);
-      if (res) {
-        form.resetFields();
-        navigation.navigate("PayListScreen");
-      }
-    } catch (error) {
-      console.log("validation faild", error);
+    const res = await updatePaymentCustomer(payment.id, values);
+    if (res) {
+      navigation.navigate("PayListScreen");
     }
   };
 
   return (
     <SafeAreaView style={{ alignItems: "center" }}>
       <center>
-        <Text variant="headlineLarge">Payment</Text>
+        <Text variant="headlineLarge">Update Payment</Text>
       </center>
 
       <br />
@@ -34,8 +40,7 @@ const PaymentScreen = ({ navigation }) => {
         <Card.Cover
           style={{ marginBottom: 10 }}
           source={{
-            //uri: "https://img.freepik.com/free-vector/realistic-monochromatic-credit-card_52683-74366.jpg?w=2000",
-            uri: "https://mysliit-my.sharepoint.com/:i:/g/personal/it20204334_my_sliit_lk/Edx31oy2kH5PnPzfzuAootQBz5cf5XV5QH43Fo-_iwrtoA?e=Lszu9m",
+            uri: "https://img.freepik.com/free-vector/realistic-monochromatic-credit-card_52683-74366.jpg?w=2000",
           }}
         />
 
@@ -43,9 +48,9 @@ const PaymentScreen = ({ navigation }) => {
           onFinishFailed={(value) => {
             console.log("errors", value.errorFields);
           }}
-          // onFinishFailed={onFinishFailed}
           component={View}
           form={form}
+          initialValues={payment} // Set the initial values of the form to the fetched payment details
           onFinish={(values) => {
             onSubmit(values);
           }}
@@ -71,7 +76,7 @@ const PaymentScreen = ({ navigation }) => {
             />
           </RcFieldForm.Field>
 
-          {/* <RcFieldForm.Field
+          <RcFieldForm.Field
             rules={[
               { required: true },
               {
@@ -88,18 +93,6 @@ const PaymentScreen = ({ navigation }) => {
             name="CardNumber"
             trigger={"onChangeText"}
             validateTrigger={"onChangeText"}
-          > */}
-          <Field
-            rules={[
-              { required: true },
-              {
-                pattern: /^\d{16}$/,
-                message: "Please enter a valid 16-digit card number",
-              },
-            ]}
-            name="CardNumber"
-            trigger={"onChangeText"}
-            validateTrigger={"onChangeText"}
           >
             <TextInput
               style={{
@@ -108,19 +101,14 @@ const PaymentScreen = ({ navigation }) => {
                 height: 50,
                 borderRadius: 40,
                 alignSelf: "center",
-                textAlign: "left",
+                textAlign: "center",
               }}
               mode="outlined"
               label="Card Number"
-              placeholder="Enter your card number"
+              placeholder="XXXX XXXX XXXX XXXX"
               keyboardType="numeric"
             />
-          </Field>
-          {!validCardNumber && (
-            <HelperText color={"#EE2F36"}>Card Number is not valid</HelperText>
-          )}
-
-          {/* </RcFieldForm.Field> */}
+          </RcFieldForm.Field>
 
           <RcFieldForm.Field
             rules={[{ required: true }]}
@@ -133,15 +121,21 @@ const PaymentScreen = ({ navigation }) => {
                 marginBottom: 10,
                 width: "80%",
                 height: 50,
-                borderRadius: 10,
+                borderRadius: 40,
                 alignSelf: "center",
-                textAlign: "left",
+                textAlign: "center",
               }}
               mode="outlined"
-              label="Expiry Date"
-              placeholder="Month/Year"
+              label="ExpiryDate"
+              placeholder="XXXX XXXX XXXX XXXX"
+              keyboardType="numeric"
             />
           </RcFieldForm.Field>
+
+          <RcFieldForm.Field
+            rules={[{ required: true }]}
+            name=""
+          ></RcFieldForm.Field>
 
           <RcFieldForm.Field
             rules={[{ required: true }]}
@@ -166,22 +160,16 @@ const PaymentScreen = ({ navigation }) => {
           </RcFieldForm.Field>
         </RcFieldForm>
         <Card.Actions>
-          {/*<TouchableOpacity onPress={onSubmit}>*/}
-          {/*    <Text>Add</Text>*/}
-          {/*</TouchableOpacity>*/}
-
           <Button
-            // onPress={() => form.submit()}
-            onPress={() => form.submit()}
+            onPress={onUpdate}
             mode="contained"
-            style={{ marginVertical: 10 }}
+            tyle={{ marginVertical: 10 }}
           >
-            Submit
+            Update
           </Button>
         </Card.Actions>
       </Card>
     </SafeAreaView>
   );
 };
-
-export default PaymentScreen;
+export default UpdatePaymentScreen;
