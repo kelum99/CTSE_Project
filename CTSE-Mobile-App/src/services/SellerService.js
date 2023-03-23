@@ -75,3 +75,13 @@ export const getAllProductByUserId = async userId => {
     return undefined;
   }
 };
+
+export const deleteProduct = async id => {
+  try {
+    await deleteDoc(doc(db, "product", id));
+    return true;
+  } catch (e) {
+    console.log("error", e);
+    return undefined;
+  }
+};
