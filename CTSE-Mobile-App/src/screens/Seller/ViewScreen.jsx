@@ -8,23 +8,40 @@ import {
   Dialog,
   Portal
 } from "react-native-paper";
-import { getAllProductByUserId } from "../../services/SellerService";
+import {
+  getAllProductByUserId,
+  deleteProduct
+} from "../../services/SellerService";
 import { useUserInfo } from "../../services/Application";
 
 const ViewScreen = ({ navigation }) => {
   const user = useUserInfo();
   const [products, setProducts] = useState([]);
   const [visible, setVisible] = useState(false);
-  const onClose = () => {
-    // setSelectedUser(undefined);
-    setVisible(false);
-  };
+  const [selectedProduct, setSelectedProduct] = useState();
 
   const getProduct = useCallback(async () => {
     const res = await getAllProductByUserId(user.id);
     setProducts(res);
     console.log("product", res);
   });
+
+  const onClose = () => {
+    setSelectedProduct(undefined);
+    setVisible(false);
+  };
+
+  const onDelete = async () => {
+    if (selectedProduct) {
+      const res = await deleteProduct(selectedProduct.id);
+      if (res) {
+        setVisible(false);
+        getProduct();
+        setSelectedProduct(undefined);
+      }
+    }
+  };
+
   useEffect(() => {
     getProduct();
   }, []);
@@ -44,7 +61,7 @@ const ViewScreen = ({ navigation }) => {
         {products.map(product => (
           <TouchableWithoutFeedback
             onPress={() =>
-              navigation.navigate("ViewScreen", {
+              navigation.navigate("ProductViewScreen", {
                 productId: product.id
               })
             }
@@ -72,7 +89,7 @@ const ViewScreen = ({ navigation }) => {
                 size={20}
                 onPress={() => {
                   setVisible(true);
-                  // setSelectedUser(user);
+                  setSelectedProduct(product);
                 }}
               />
             </View>
@@ -89,7 +106,7 @@ const ViewScreen = ({ navigation }) => {
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={onClose}>Cancel</Button>
-            <Button mode="contained" buttonColor="red">
+            <Button mode="contained" buttonColor="red" onPress={onDelete}>
               Remove
             </Button>
           </Dialog.Actions>
