@@ -3,9 +3,10 @@ import { SafeAreaView, View } from "react-native";
 import RcFieldForm from "rc-field-form";
 import { Button, HelperText, TextInput } from "react-native-paper";
 import { AddProduct } from "../../services/SellerService";
-import { useUserInfo } from "../../services/Application";
+import { useUserInfo, useEvents } from "../../services/Application";
 const AddProductScreen = ({ navigation }) => {
   const user = useUserInfo();
+  const event = useEvents();
   const ref_name = useRef();
   const ref_price = useRef();
   const ref_description = useRef();
@@ -13,11 +14,12 @@ const AddProductScreen = ({ navigation }) => {
 
   const [form] = RcFieldForm.useForm();
 
-  const onSubmit = async values => {
+  const onSubmit = async (values) => {
     const product = { ...values, userId: user.id };
     const res = await AddProduct(product);
     if (res) {
-      navigation.navigate("ViewScreen");
+      event.emit("GET_PRODUCTS");
+      navigation.navigate("ProductScreen");
     }
   };
 
@@ -26,12 +28,12 @@ const AddProductScreen = ({ navigation }) => {
       style={{ backgroundColor: "#fff", paddingHorizontal: 10, flex: 1 }}
     >
       <RcFieldForm
-        onFinishFailed={value => {
+        onFinishFailed={(value) => {
           console.log("errors", value.errorFields);
         }}
         component={View}
         form={form}
-        onFinish={values => {
+        onFinish={(values) => {
           onSubmit(values);
         }}
       >

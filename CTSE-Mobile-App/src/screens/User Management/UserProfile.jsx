@@ -131,7 +131,7 @@ const UserProfile = ({ route }) => {
                       }
                       rules={[{ required: true }]}
                       name={
-                        details.role === "customer" ? "lastname" : "shopName"
+                        details.role === "customer" ? "lastname" : "storeName"
                       }
                       trigger={"onChangeText"}
                       validateTrigger={"onChangeText"}

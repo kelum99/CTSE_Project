@@ -6,16 +6,17 @@ import {
   Text,
   IconButton,
   Dialog,
-  Portal
+  Portal,
 } from "react-native-paper";
 import {
   getAllProductByUserId,
-  deleteProduct
+  deleteProduct,
 } from "../../services/SellerService";
-import { useUserInfo } from "../../services/Application";
+import { useUserInfo, useEvents } from "../../services/Application";
 
 const ViewScreen = ({ navigation }) => {
   const user = useUserInfo();
+  const event = useEvents();
   const [products, setProducts] = useState([]);
   const [visible, setVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState();
@@ -36,14 +37,21 @@ const ViewScreen = ({ navigation }) => {
       const res = await deleteProduct(selectedProduct.id);
       if (res) {
         setVisible(false);
-        getProduct();
         setSelectedProduct(undefined);
+        getProduct();
       }
     }
   };
 
   useEffect(() => {
     getProduct();
+    const handler = () => {
+      getProduct();
+    };
+    event.on("GET_PRODUCTS", handler);
+    return () => {
+      event.off("GET_PRODUCTS", handler);
+    };
   }, []);
   return (
     <SafeAreaView
@@ -58,11 +66,11 @@ const ViewScreen = ({ navigation }) => {
       </Button>
 
       <View>
-        {products.map(product => (
+        {products.map((product) => (
           <TouchableWithoutFeedback
             onPress={() =>
               navigation.navigate("ProductViewScreen", {
-                productId: product.id
+                productId: product.id,
               })
             }
           >
@@ -72,12 +80,12 @@ const ViewScreen = ({ navigation }) => {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 marginVertical: 4,
-                paddingHorizontal: 8
+                paddingHorizontal: 8,
               }}
             >
               <View
                 style={{
-                  display: "flex"
+                  display: "flex",
                 }}
               >
                 <Text variant="titleMedium">{product.name}</Text>
@@ -88,8 +96,8 @@ const ViewScreen = ({ navigation }) => {
                 iconColor={"red"}
                 size={20}
                 onPress={() => {
-                  setVisible(true);
                   setSelectedProduct(product);
+                  setVisible(true);
                 }}
               />
             </View>
