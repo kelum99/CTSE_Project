@@ -2,7 +2,7 @@ import React, { useCallback, useState, useEffect } from "react";
 import { SafeAreaView, View } from "react-native";
 import { Button, Text, TextInput, ActivityIndicator } from "react-native-paper";
 import RcFieldForm from "rc-field-form";
-//import { usePaymentInfo } from "../../services/Application";
+import { usePaymentInfo } from "../../services/Application";
 import { updatePayment, getPaymentById } from "../../services/PaymentService";
 
 const DetailText = (props) => {
@@ -36,6 +36,7 @@ const UpdatePaymentScreen = ({ route }) => {
   const getPayment = useCallback(async () => {
     setLoading(true);
     const res = await getPaymentById(payment ? paymentId : payment.id);
+    setPayment(res);
     setDetails(res);
     setLoading(false);
   });
@@ -67,14 +68,14 @@ const UpdatePaymentScreen = ({ route }) => {
         <ActivityIndicator animating={true} />
       ) : (
         <View>
-          {/* {!admin && (
+          {details && (
             <Button
               onPress={() => setEdit(!edit)}
               style={{ alignSelf: "flex-end" }}
             >
               {edit ? " Cancel" : "Edit"}
             </Button>
-          )} */}
+          )}
           {details && (
             <View>
               {/* <Avatar.Text
