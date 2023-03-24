@@ -8,6 +8,7 @@ import {
   getDoc,
   deleteDoc,
   doc,
+  updateDoc,
 } from "firebase/firestore";
 
 export const AddProduct = async (values) => {
@@ -18,6 +19,7 @@ export const AddProduct = async (values) => {
       description: values.description,
       quantity: values.quantity,
       userId: values.userId,
+      imgUrl: values.imgUrl,
     });
     return fruit;
   } catch (err) {
@@ -42,25 +44,25 @@ export const getAllProduct = async () => {
   }
 };
 
-export const getProductById = async (id) => {
-  try {
-    let product;
-    const docRef = doc(db, "product", id);
-    const docSnap = await getDoc(docRef);
+// export const getProductById = async id => {
+//   try {
+//     let product;
+//     const docRef = doc(db, "product", id);
+//     const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-      product = docSnap.data();
-    } else {
-      console.log("No such document!");
-      product = undefined;
-    }
-    return product;
-  } catch (e) {
-    console.log("error", e);
-    return undefined;
-  }
-};
+//     if (docSnap.exists()) {
+//       console.log("Document data:", docSnap.data());
+//       product = docSnap.data();
+//     } else {
+//       console.log("No such document!");
+//       product = undefined;
+//     }
+//     return product;
+//   } catch (e) {
+//     console.log("error", e);
+//     return undefined;
+//   }
+// };
 
 export const getAllProductByUserId = async (userId) => {
   try {
@@ -81,6 +83,34 @@ export const getAllProductByUserId = async (userId) => {
 export const deleteProduct = async (id) => {
   try {
     await deleteDoc(doc(db, "product", id));
+    return true;
+  } catch (e) {
+    console.log("error", e);
+    return undefined;
+  }
+};
+
+export const getProductById = async (id) => {
+  try {
+    const docRef = doc(db, "product", id);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return { id: docSnap.id, ...docSnap.data() };
+    } else {
+      console.log("No such document!");
+      product = undefined;
+    }
+    return product;
+  } catch (e) {
+    console.log("error", e);
+    return undefined;
+  }
+};
+
+export const updateProduct = async (id, values) => {
+  try {
+    await updateDoc(doc(db, "product", id), values);
     return true;
   } catch (e) {
     console.log("error", e);

@@ -113,7 +113,7 @@ const Item = ({ item }) => {
       <Image
         style={styles.stretch}
         source={{
-          uri: "https://i.pinimg.com/564x/e7/74/30/e774300d916fb1cdb5900ecd2ea57867.jpg",
+          uri: item.imgUrl,
         }}
       />
 
@@ -190,6 +190,7 @@ const Cart = ({ navigation }) => {
     if (cartSnap.exists()) {
       setCartItems(cartSnap.data().cartItems);
     } else {
+      setCartItems([]);
       Alert.alert("Cart Is Empty! Please Add Items to View the Cart");
     }
   };

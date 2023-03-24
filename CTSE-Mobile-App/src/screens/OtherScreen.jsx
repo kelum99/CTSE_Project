@@ -3,7 +3,6 @@ import React from "react";
 import { SafeAreaView } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { useUserInfo } from "../services/Application";
-import { getAllUsers, getUserById } from "../services/UserService";
 
 const OtherScreen = ({ navigation }) => {
   const user = useUserInfo();
@@ -22,13 +21,15 @@ const OtherScreen = ({ navigation }) => {
       >
         My Wallet
       </Button>
-      <Button
-        style={{ marginVertical: 30 }}
-        onPress={() => navigation.navigate("AllUserScreen")}
-        mode="contained"
-      >
-        User Management
-      </Button>
+      {user.user.role === "admin" && (
+        <Button
+          style={{ marginVertical: 30 }}
+          onPress={() => navigation.navigate("AllUserScreen")}
+          mode="contained"
+        >
+          User Management
+        </Button>
+      )}
       <Button style={{ marginVertical: 30 }} onPress={logout} mode="contained">
         LogOut
       </Button>

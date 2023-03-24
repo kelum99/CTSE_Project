@@ -13,16 +13,15 @@ import {
   Card,
   Dialog,
   Portal,
-  IconButton,
 } from "react-native-paper";
 import { getAllPayments, deletePayment } from "../../services/PaymentService";
+import { useEvents } from "../../services/Application";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //alignItems: "center",
-    marginTop: StatusBar.currentHeight || 0,
-    padding: "2%",
+    backgroundColor: "#fff",
+    padding: 12,
   },
   card: {
     //width: "100%",
@@ -41,6 +40,7 @@ const styles = StyleSheet.create({
 });
 
 const PayListScreen = ({ navigation }) => {
+  const event = useEvents();
   const [payments, setPayments] = useState([]);
   const [selectedPayment, setSelectedPayment] = useState();
   const [loading, setLoading] = useState(false);
@@ -55,7 +55,7 @@ const PayListScreen = ({ navigation }) => {
 
   const handleUpdatePayment = (payment) => {
     setSelectedPayment(payment);
-    navigation.navigate("PaymentScreen", { payment });
+    navigation.navigate("UpdatePaymentScreen", { paymentId: payment.id });
   };
 
   const handleDeletePayment = async (payment) => {
@@ -69,19 +69,27 @@ const PayListScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchPayments();
+    const handler = () => {
+      fetchPayments();
+    };
+    event.on("GET_CARDS", handler);
+    return () => {
+      event.off("GET_CARDS", handler);
+    };
   }, []);
 
   const renderItem = ({ item }) => (
-    <View style={{ paddingBottom: 10 }}>
+    <View style={{ paddingBottom: 10, marginHorizontal: 12 }}>
       <Card style={styles.card}>
         <Card.Title title={item.CardHolderName} />
         <Card.Content>
           <Text>Card Number: {item.CardNumber}</Text>
-          <Text>Ex Date: {item.ExpiryDate}</Text>
-          <Text>CVV: {item.CVV}</Text>
+          {/* <Text>Ex Date: {item.ExpiryDate}</Text>
+          <Text>CVV: {item.CVV}</Text> */}
         </Card.Content>
         <Card.Actions>
           <Button
+            textColor="#fff"
             style={styles.button}
             onPress={() => {
               setSelectedPayment(item);
@@ -115,6 +123,7 @@ const PayListScreen = ({ navigation }) => {
         <ActivityIndicator animating={true} />
       ) : (
         <FlatList
+          style={{ marginVertical: 10 }}
           data={payments}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}

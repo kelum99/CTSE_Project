@@ -69,9 +69,7 @@ const ViewScreen = ({ navigation }) => {
         {products.map((product) => (
           <TouchableWithoutFeedback
             onPress={() =>
-              navigation.navigate("ProductViewScreen", {
-                productId: product.id,
-              })
+              navigation.navigate("FruitViewScreen", { productId: product.id })
             }
           >
             <View
