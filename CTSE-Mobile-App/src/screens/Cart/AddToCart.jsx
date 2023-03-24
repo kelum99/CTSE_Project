@@ -1,40 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, Image, StyleSheet, View } from "react-native";
+import { SafeAreaView, Image, StyleSheet, View, Alert } from "react-native";
 import { Card, Text, Button, IconButton } from "react-native-paper";
 import { db } from "../../../firebaseConfig";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useUserInfo } from "../../services/Application";
+import uuid from "react-native-uuid";
 
-const AddToCart = ({ navigation }) => {
+const AddToCart = ({ navigation, route }) => {
+  const { fruit } = route.params;
   const [amount, setAmount] = useState(1);
-  const unitPrice = 500.0;
-  const [price, setPrice] = useState(unitPrice * amount);
+  const [price, setPrice] = useState(fruit.price * amount);
   const user = useUserInfo();
   const [items, setCartItems] = useState([]);
 
-  const item = [
-    {
-      itemId: "001",
-      itemName: "Mango",
-      description: "MangoMangoMangoMangoMangoMangoMangoMangoMango",
-      qty: 2,
-      itemPrice: 200,
-      selected: false,
-    },
-    {
-      itemId: "002",
-      itemName: "Banana",
-      description: "BananaBananaBananaBananaBananaBanana",
-      qty: 1,
-      itemPrice: 100,
-      selected: false,
-    },
-  ];
+  const item = [];
 
   const newItem = {
-    itemId: "003",
-    itemName: "Strawberry",
-    description: "StrawberryStrawberryStrawberryStrawberryStrawberryStrawberry",
+    itemId: uuid.v4(),
+    itemName: fruit.name,
+    description: fruit.description,
     qty: amount,
     itemPrice: price,
     selected: false,
@@ -60,20 +44,26 @@ const AddToCart = ({ navigation }) => {
     const cartSnap = await getDoc(cartRef).catch((err) => {
       console.log("error in getting cart", err);
     });
-
+    fetchCartItems();
     items.push(newItem);
 
     if (cartSnap.exists()) {
       updateDoc(cartRef, {
         cartItems: items,
       });
+      Alert.alert("Item Added To Cart");
     } else {
+      item.push(newItem);
       setDoc(doc(db, "cart", user.user.email), {
         cartId: user.user.email,
         cartItems: item,
       });
     }
     fetchCartItems();
+    Alert.alert("Item Added To Cart");
+    navigation.navigate("Cart");
+    setAmount(1);
+    setPrice(fruit.price * amount);
   };
 
   return (
@@ -90,15 +80,12 @@ const AddToCart = ({ navigation }) => {
       </View>
       <Card style={styles.descCard} mode="elevated" elevation={10}>
         <Card.Content>
-          <Text variant="headlineLarge">Avacado - Medium</Text>
-          <Text variant="headlineSmall" style={styles.cardSubtitle}>
+          <Text variant="headlineLarge">{fruit.name}</Text>
+          {/* <Text variant="headlineSmall" style={styles.cardSubtitle}>
             1pc (500g - 700g)
-          </Text>
+          </Text> */}
           <Text variant="bodyLarge" style={{ paddingTop: "5%" }}>
-            The avocado is a medium-sized, evergreen tree in the laurel family.
-            It is native to the Americas and was first domesticated by
-            Mesoamerican tribes more than 5,000 years ago. Then as now it was
-            prized for its large and unusually oily fruit
+            {fruit.description}
           </Text>
           <View
             style={{
@@ -120,7 +107,7 @@ const AddToCart = ({ navigation }) => {
                 size={50}
                 onPress={() => {
                   setAmount(amount - 1);
-                  setPrice((amount - 1) * unitPrice);
+                  setPrice((amount - 1) * fruit.price);
                 }}
               />
               <Text style={{ fontSize: 32, paddingTop: "5%" }}>{amount}</Text>
@@ -131,11 +118,13 @@ const AddToCart = ({ navigation }) => {
                 size={50}
                 onPress={() => {
                   setAmount(amount + 1);
-                  setPrice((amount + 1) * unitPrice);
+                  setPrice((amount + 1) * fruit.price);
                 }}
               />
             </View>
-            <Text style={{ fontSize: 28, paddingTop: "5%" }}>Rs {price}</Text>
+            <Text style={{ fontSize: 28, paddingTop: "5%" }}>
+              Rs {fruit.price * amount}
+            </Text>
           </View>
         </Card.Content>
 
