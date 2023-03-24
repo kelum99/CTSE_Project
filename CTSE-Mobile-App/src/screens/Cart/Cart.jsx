@@ -190,7 +190,7 @@ const Cart = ({ navigation }) => {
     if (cartSnap.exists()) {
       setCartItems(cartSnap.data().cartItems);
     } else {
-      // Alert.alert("Cart Is Empty! Please Add Items to View the Cart");
+      Alert.alert("Cart Is Empty! Please Add Items to View the Cart");
     }
   };
 
@@ -213,11 +213,12 @@ const Cart = ({ navigation }) => {
     await deleteDoc(doc(db, "cart", user.user.email))
       .then(() => {
         Alert.alert("Cart Emptied !");
+        fetchCartItems();
       })
       .catch((error) => {
         Alert.alert("Error in deleting cart !");
       });
-    await fetchCartItems();
+    fetchCartItems();
   };
 
   const selectAll = async () => {
@@ -255,7 +256,10 @@ const Cart = ({ navigation }) => {
         <Button
           icon="cart-variant"
           mode="contained"
-          onPress={emptyCart}
+          onPress={() => {
+            emptyCart();
+            fetchCartItems();
+          }}
           style={{ backgroundColor: "#D22B2B" }}
         >
           Empty Cart
