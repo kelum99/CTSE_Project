@@ -15,9 +15,9 @@ const PaymentScreen = ({ navigation }) => {
       await form.validateFields();
       const res = await paymentCustomer(values);
       if (res) {
-        event.emmit("GET_CARDS");
         form.resetFields();
         navigation.navigate("PayListScreen");
+        event.emmit("GET_CARDS");
       }
     } catch (error) {
       console.log("validation faild", error);
@@ -38,7 +38,7 @@ const PaymentScreen = ({ navigation }) => {
           style={{ marginBottom: 10 }}
           source={{
             //uri: "https://img.freepik.com/free-vector/realistic-monochromatic-credit-card_52683-74366.jpg?w=2000",
-            uri: "https://mysliit-my.sharepoint.com/:i:/g/personal/it20204334_my_sliit_lk/Edx31oy2kH5PnPzfzuAootQBz5cf5XV5QH43Fo-_iwrtoA?e=Lszu9m",
+            uri: "https://cdn3.vectorstock.com/i/1000x1000/50/97/blue-credit-card-isolated-on-white-background-vector-34565097.jpg",
           }}
         />
 
