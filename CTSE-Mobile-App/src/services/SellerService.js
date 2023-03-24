@@ -7,17 +7,19 @@ import {
   getDocs,
   getDoc,
   deleteDoc,
-  doc
+  doc,
+  updateDoc,
 } from "firebase/firestore";
 
-export const AddProduct = async values => {
+export const AddProduct = async (values) => {
   try {
     const fruit = await addDoc(collection(db, "product"), {
       name: values.name,
       price: values.price,
       description: values.description,
       quantity: values.quantity,
-      userId: values.userId
+      userId: values.userId,
+      imgUrl: values.imgUrl,
     });
     return fruit;
   } catch (err) {
@@ -31,7 +33,7 @@ export const getAllProduct = async () => {
     let product = [];
     const q = query(collection(db, "product"));
     const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(doc => {
+    querySnapshot.forEach((doc) => {
       const fruit = { id: doc.id, ...doc.data() };
       product.push(fruit);
     });
@@ -62,12 +64,12 @@ export const getAllProduct = async () => {
 //   }
 // };
 
-export const getAllProductByUserId = async userId => {
+export const getAllProductByUserId = async (userId) => {
   try {
     let product = [];
     const q = query(collection(db, "product"), where("userId", "==", userId));
     const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(doc => {
+    querySnapshot.forEach((doc) => {
       const fruit = { id: doc.id, ...doc.data() };
       product.push(fruit);
     });
@@ -78,7 +80,7 @@ export const getAllProductByUserId = async userId => {
   }
 };
 
-export const deleteProduct = async id => {
+export const deleteProduct = async (id) => {
   try {
     await deleteDoc(doc(db, "product", id));
     return true;
@@ -88,20 +90,28 @@ export const deleteProduct = async id => {
   }
 };
 
-export const getProductById = async id => {
+export const getProductById = async (id) => {
   try {
-    let product;
     const docRef = doc(db, "product", id);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-      product = docSnap.data();
+      return { id: docSnap.id, ...docSnap.data() };
     } else {
       console.log("No such document!");
       product = undefined;
     }
     return product;
+  } catch (e) {
+    console.log("error", e);
+    return undefined;
+  }
+};
+
+export const updateProduct = async (id, values) => {
+  try {
+    await updateDoc(doc(db, "product", id), values);
+    return true;
   } catch (e) {
     console.log("error", e);
     return undefined;
