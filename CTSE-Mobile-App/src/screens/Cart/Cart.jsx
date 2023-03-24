@@ -113,7 +113,7 @@ const Item = ({ item }) => {
       <Image
         style={styles.stretch}
         source={{
-          uri: "https://i.pinimg.com/564x/e7/74/30/e774300d916fb1cdb5900ecd2ea57867.jpg",
+          uri: item.imgUrl,
         }}
       />
 
@@ -213,6 +213,7 @@ const Cart = ({ navigation }) => {
     await deleteDoc(doc(db, "cart", user.user.email))
       .then(() => {
         Alert.alert("Cart Emptied !");
+        setCartItems([]);
         fetchCartItems();
       })
       .catch((error) => {

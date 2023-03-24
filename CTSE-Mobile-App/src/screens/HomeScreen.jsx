@@ -2,12 +2,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useCallback, useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, View } from "react-native";
 import { Button, Card, Text } from "react-native-paper";
-import { useUserInfo } from "../services/Application";
+import { useUserInfo, useEvents } from "../services/Application";
 import { getAllProduct } from "../services/SellerService";
 import { Searchbar } from "react-native-paper";
 
 const HomeScreen = ({ navigation }) => {
   const user = useUserInfo();
+  const event = useEvents();
   const [fruits, setFruits] = useState([]);
   const [searchText, setSearchText] = React.useState("");
 
@@ -19,6 +20,13 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     getAllFruits();
+    const handler = () => {
+      getAllFruits();
+    };
+    event.on("GET_ALL_FRUITS", handler);
+    return () => {
+      event.off("GET_ALL_FRUITS", handler);
+    };
   }, []);
 
   const searchFruits = (text) => {
@@ -76,7 +84,7 @@ const HomeScreen = ({ navigation }) => {
                     })
                   }
                 >
-                  <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
+                  <Card.Cover source={{ uri: fruit.imgUrl }} />
                   <Card.Content>
                     <Text style={{ marginTop: 10 }} variant="titleLarge">
                       {fruit.name}
