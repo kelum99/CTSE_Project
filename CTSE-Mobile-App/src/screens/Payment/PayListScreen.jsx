@@ -55,7 +55,7 @@ const PayListScreen = ({ navigation }) => {
 
   const handleUpdatePayment = (payment) => {
     setSelectedPayment(payment);
-    navigation.navigate("PaymentScreen", { payment });
+    navigation.navigate("UpdatePaymentScreen", { payment });
   };
 
   const handleDeletePayment = async (payment) => {
@@ -77,8 +77,8 @@ const PayListScreen = ({ navigation }) => {
         <Card.Title title={item.CardHolderName} />
         <Card.Content>
           <Text>Card Number: {item.CardNumber}</Text>
-          <Text>Ex Date: {item.ExpiryDate}</Text>
-          <Text>CVV: {item.CVV}</Text>
+          {/* <Text>Ex Date: {item.ExpiryDate}</Text>
+          <Text>CVV: {item.CVV}</Text> */}
         </Card.Content>
         <Card.Actions>
           <Button

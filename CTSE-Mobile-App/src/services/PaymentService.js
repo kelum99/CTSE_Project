@@ -53,10 +53,9 @@ export const getPaymentById = async (id) => {
     }
 };
 
-export const updatePayment = async (id, updates) => {
+export const updatePayment = async (id, values) => {
     try {
-        const docRef = doc(db, "payments", id);
-        await updateDoc(docRef, updates);
+        await updateDoc(doc(db, "payments", id), values);
         return true;
     } catch (e) {
         console.log("error", e);
