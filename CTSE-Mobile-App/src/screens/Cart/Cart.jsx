@@ -190,6 +190,7 @@ const Cart = ({ navigation }) => {
     if (cartSnap.exists()) {
       setCartItems(cartSnap.data().cartItems);
     } else {
+      setCartItems([]);
       Alert.alert("Cart Is Empty! Please Add Items to View the Cart");
     }
   };
@@ -213,7 +214,6 @@ const Cart = ({ navigation }) => {
     await deleteDoc(doc(db, "cart", user.user.email))
       .then(() => {
         Alert.alert("Cart Emptied !");
-        setCartItems([]);
         fetchCartItems();
       })
       .catch((error) => {

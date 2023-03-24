@@ -2,7 +2,6 @@ import React, { useCallback, useState, useEffect } from "react";
 import { SafeAreaView, View } from "react-native";
 import { Button, Text, TextInput, ActivityIndicator } from "react-native-paper";
 import RcFieldForm from "rc-field-form";
-import { usePaymentInfo } from "../../services/Application";
 import { updatePayment, getPaymentById } from "../../services/PaymentService";
 
 const DetailText = (props) => {
@@ -25,18 +24,15 @@ const DetailText = (props) => {
 };
 
 const UpdatePaymentScreen = ({ route }) => {
-  //const payment = usePaymentInfo();
   const [form] = RcFieldForm.useForm();
-  const [details, setDetails] = useState([]);
+  const [details, setDetails] = useState();
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
   const { paymentId } = route.params;
-  const [payment, setPayment] = useState({});
 
   const getPayment = useCallback(async () => {
     setLoading(true);
-    const res = await getPaymentById(payment ? paymentId : payment.id);
-    setPayment(res);
+    const res = await getPaymentById(paymentId);
     setDetails(res);
     setLoading(false);
   });
@@ -44,7 +40,7 @@ const UpdatePaymentScreen = ({ route }) => {
   const onSubmit = async (values) => {
     delete details.id;
     const updateValues = { ...details, ...values };
-    const res = await updatePayment(payment.id, updateValues);
+    const res = await updatePayment(paymentId, updateValues);
     if (res) {
       getPayment();
       setEdit(false);

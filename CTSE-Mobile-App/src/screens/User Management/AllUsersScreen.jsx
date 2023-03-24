@@ -20,7 +20,7 @@ const AllUserScreen = ({ navigation }) => {
   const getUsers = async () => {
     setLoading(true);
     const usersX = await getAllUsers();
-    setUsers(usersX);
+    setUsers(usersX.filter((v) => v.role !== "admin"));
     setLoading(false);
   };
 

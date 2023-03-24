@@ -55,8 +55,16 @@ const AddProductScreen = ({ navigation }) => {
     <SafeAreaView
       style={{ backgroundColor: "#fff", paddingHorizontal: 10, flex: 1 }}
     >
-      <View style={{ alignItems: "center", justifyContent: "center" }}>
-        <Button onPress={pickImage}>Upload Image</Button>
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          marginVertical: 10,
+        }}
+      >
+        <Button mode="outlined" onPress={pickImage}>
+          Upload Image
+        </Button>
         {image && (
           <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
         )}

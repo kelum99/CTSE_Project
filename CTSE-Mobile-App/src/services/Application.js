@@ -13,16 +13,3 @@ export const updateUser = () => {
 export const useEvents = () => {
   return useContext(ApplicationContext).events;
 };
-
-
-//Payment
-
-export const usePaymentInfo = () => {
-  const context = useContext(ApplicationContext);
-  return context.payment;
-};
-
-export const updatePaymet = () => {
-  const context = useContext(ApplicationContext);
-  return context.setNewPayment;
-};
