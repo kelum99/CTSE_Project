@@ -6,11 +6,11 @@ import {
   Text,
   IconButton,
   Dialog,
-  Portal,
+  Portal
 } from "react-native-paper";
 import {
   getAllProductByUserId,
-  deleteProduct,
+  deleteProduct
 } from "../../services/SellerService";
 import { useUserInfo, useEvents } from "../../services/Application";
 
@@ -66,11 +66,12 @@ const ViewScreen = ({ navigation }) => {
       </Button>
 
       <View>
-        {products.map((product) => (
+        {products.map(product => (
           <TouchableWithoutFeedback
             onPress={() =>
               navigation.navigate("ProductViewScreen", {
-                productId: product.id,
+                screen: "ProductViewScreen",
+                params: { productId: product.id }
               })
             }
           >
@@ -80,12 +81,12 @@ const ViewScreen = ({ navigation }) => {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 marginVertical: 4,
-                paddingHorizontal: 8,
+                paddingHorizontal: 8
               }}
             >
               <View
                 style={{
-                  display: "flex",
+                  display: "flex"
                 }}
               >
                 <Text variant="titleMedium">{product.name}</Text>
