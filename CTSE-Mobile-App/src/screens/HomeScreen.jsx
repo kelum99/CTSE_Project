@@ -50,7 +50,11 @@ const HomeScreen = ({ navigation }) => {
       style={{ backgroundColor: "#fff", paddingHorizontal: 10, flex: 1 }}
     >
       <Text
-        style={{ textAlign: "center", color: "rgb(0, 110, 0)" }}
+        style={{
+          textAlign: "center",
+          color: "rgb(0, 110, 0)",
+          marginVertical: 8,
+        }}
         variant="headlineSmall"
       >
         Fruit Mart
