@@ -21,6 +21,7 @@ const AddToCart = ({ navigation, route }) => {
     description: fruit.description,
     qty: amount,
     itemPrice: price,
+    imgUrl: fruit.imgUrl,
     selected: false,
   };
 
@@ -74,7 +75,7 @@ const AddToCart = ({ navigation, route }) => {
         <Image
           style={styles.stretch}
           source={{
-            uri: "https://i.pinimg.com/564x/3a/40/ca/3a40ca2d873095b54a1809725764ff18.jpg",
+            uri: fruit.imgUrl,
           }}
         />
       </View>

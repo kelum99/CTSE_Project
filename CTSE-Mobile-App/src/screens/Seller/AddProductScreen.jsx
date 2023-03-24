@@ -45,6 +45,7 @@ const AddProductScreen = ({ navigation }) => {
     const product = { ...values, userId: user.id, imgUrl: url };
     const res = await AddProduct(product);
     if (res) {
+      event.emit("GET_ALL_FRUITS");
       event.emit("GET_PRODUCTS");
       navigation.navigate("ProductScreen");
     }
