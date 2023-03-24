@@ -3,16 +3,19 @@ import { SafeAreaView, View } from "react-native";
 import { Button, Text, Card, TextInput, HelperText } from "react-native-paper";
 import RcFieldForm, { Field } from "rc-field-form";
 import { paymentCustomer } from "../../services/PaymentService";
+import { useEvents } from "../../services/Application";
 
 const PaymentScreen = ({ navigation }) => {
   const [validCardNumber, setIsValidCardNumber] = useState(true);
   const [form] = RcFieldForm.useForm();
+  const event = useEvents();
 
   const onSubmit = async (values) => {
     try {
       await form.validateFields();
       const res = await paymentCustomer(values);
       if (res) {
+        event.emmit("GET_CARDS");
         form.resetFields();
         navigation.navigate("PayListScreen");
       }
