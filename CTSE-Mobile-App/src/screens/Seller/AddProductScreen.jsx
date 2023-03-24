@@ -23,7 +23,7 @@ const AddProductScreen = ({ navigation }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 1
     });
     if (!result.canceled) {
       setImage(result.assets[0].uri);
@@ -39,7 +39,7 @@ const AddProductScreen = ({ navigation }) => {
     return url;
   };
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     const url = await uploadImage();
     console.log("sss", url);
     const product = { ...values, userId: user.id, imgUrl: url };
@@ -59,7 +59,7 @@ const AddProductScreen = ({ navigation }) => {
         style={{
           alignItems: "center",
           justifyContent: "center",
-          marginVertical: 10,
+          marginVertical: 10
         }}
       >
         <Button mode="outlined" onPress={pickImage}>
@@ -70,12 +70,12 @@ const AddProductScreen = ({ navigation }) => {
         )}
       </View>
       <RcFieldForm
-        onFinishFailed={(value) => {
+        onFinishFailed={value => {
           console.log("errors", value.errorFields);
         }}
         component={View}
         form={form}
-        onFinish={(values) => {
+        onFinish={values => {
           onSubmit(values);
         }}
       >
@@ -103,7 +103,7 @@ const AddProductScreen = ({ navigation }) => {
             label={"Price"}
             ref={ref_price}
             mode="outlined"
-            placeholder={"Enter Price"}
+            placeholder={"Enter Price In LRK"}
           />
         </RcFieldForm.Field>
 
@@ -131,7 +131,7 @@ const AddProductScreen = ({ navigation }) => {
             label={"Quantity"}
             ref={ref_quantity}
             mode="outlined"
-            placeholder={"Enter Quantity"}
+            placeholder={"Enter Quantity In Kg"}
           />
         </RcFieldForm.Field>
       </RcFieldForm>
