@@ -3,19 +3,21 @@ import { View } from "react-native";
 import { SafeAreaView } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { useUserInfo } from "../../services/Application";
-import { getAllProductByUserId } from "../../services/SellerService";
+import { getProductById } from "../../services/SellerService";
+import React from "react";
 
-const ProductView = ({ route }) => {
-  const user = useUserInfo();
-  const [details, setDetails] = useState();
-  const { admin, userId } = route.params;
+const ProductViewScreen = ({ route }) => {
+  // const user = useUserInfo();
+  // const [details, setDetails] = useState();
+  const { productId } = route.params;
+  const [product, setProduct] = useState(null);
 
-  const getUser = useCallback(async () => {
-    const res = await getUserById(admin ? userId : user.id);
+  const getProduct = useCallback(async () => {
+    const res = await getProductById(productId == product.id);
     setDetails(res);
   });
   useEffect(() => {
-    getUser();
+    getProduct();
   }, []);
   return (
     <SafeAreaView
@@ -26,10 +28,10 @@ const ProductView = ({ route }) => {
         paddingTop: 22
       }}
     >
-      {!admin && <Button style={{ alignSelf: "flex-end" }}>Edit</Button>}
+      {/* {!admin && <Button style={{ alignSelf: "flex-end" }}>Edit</Button>} */}
       {details && (
         <View>
-          <Avatar.Text
+          {/* <Avatar.Text
             style={{ alignSelf: "center", marginVertical: 16 }}
             size={132}
             label={
@@ -37,8 +39,8 @@ const ProductView = ({ route }) => {
                 ? details.firstname.charAt(0).toUpperCase()
                 : details.name.charAt(0).toUpperCase()
             }
-          />
-          <DetailText
+          /> */}
+          {/* <DetailText
             lable={details.role === "customer" ? "First Name" : "Name"}
             value={
               details.role === "customer" ? details.firstname : details.name
@@ -49,14 +51,14 @@ const ProductView = ({ route }) => {
             value={
               details.role === "customer" ? details.lastname : details.storeName
             }
-          />
-          <DetailText lable={"E-mail"} value={details.email} />
-          <DetailText lable={"Mobile"} value={details.mobile} />
-          <DetailText lable={"Address"} value={details.address} />
-          <DetailText lable={"User Role"} value={details.role} />
+          /> */}
+          <DetailText lable={"Name"} value={details.name} />
+          <DetailText lable={"Price"} value={details.price} />
+          <DetailText lable={"Description"} value={details.description} />
+          <DetailText lable={"Quantity"} value={details.quantity} />
         </View>
       )}
     </SafeAreaView>
   );
 };
-export default ProductView;
+export default ProductViewScreen;
