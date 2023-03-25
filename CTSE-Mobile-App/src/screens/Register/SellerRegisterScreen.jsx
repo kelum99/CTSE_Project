@@ -35,6 +35,7 @@ const SellerRegisterScreen = ({ navigation }) => {
           validateTrigger={"onChangeText"}
         >
           <TextInput
+            style={{ marginVertical: 10 }}
             label={"Name"}
             mode="outlined"
             placeholder={"Enter Name"}
@@ -47,6 +48,7 @@ const SellerRegisterScreen = ({ navigation }) => {
           validateTrigger={"onChangeText"}
         >
           <TextInput
+            style={{ marginVertical: 10 }}
             label={"Store Name"}
             mode="outlined"
             placeholder={"Enter Store Name"}
@@ -59,6 +61,7 @@ const SellerRegisterScreen = ({ navigation }) => {
           validateTrigger={"onChangeText"}
         >
           <TextInput
+            style={{ marginVertical: 10 }}
             label={"Email"}
             onChangeText={(text) => {
               const mailFormat =
@@ -84,6 +87,7 @@ const SellerRegisterScreen = ({ navigation }) => {
           validateTrigger={"onChangeText"}
         >
           <TextInput
+            style={{ marginVertical: 10 }}
             label={"Mobile"}
             mode="outlined"
             keyboardType="number-pad"
@@ -97,6 +101,7 @@ const SellerRegisterScreen = ({ navigation }) => {
           validateTrigger={"onChangeText"}
         >
           <TextInput
+            style={{ marginVertical: 10 }}
             label={"Address"}
             mode="outlined"
             placeholder={"Enter Address"}
@@ -109,6 +114,7 @@ const SellerRegisterScreen = ({ navigation }) => {
           validateTrigger={"onChangeText"}
         >
           <TextInput
+            style={{ marginVertical: 10 }}
             label={"Password"}
             mode="outlined"
             placeholder={"Enter Password"}
