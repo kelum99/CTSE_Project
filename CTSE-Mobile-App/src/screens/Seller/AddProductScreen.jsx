@@ -95,20 +95,6 @@ const AddProductScreen = ({ navigation }) => {
 
         <RcFieldForm.Field
           rules={[{ required: true }]}
-          name="price"
-          trigger={"onChangeText"}
-          validateTrigger={"onChangeText"}
-        >
-          <TextInput
-            label={"Price"}
-            ref={ref_price}
-            mode="outlined"
-            placeholder={"Enter Price"}
-          />
-        </RcFieldForm.Field>
-
-        <RcFieldForm.Field
-          rules={[{ required: true }]}
           name="description"
           trigger={"onChangeText"}
           validateTrigger={"onChangeText"}
@@ -123,11 +109,27 @@ const AddProductScreen = ({ navigation }) => {
 
         <RcFieldForm.Field
           rules={[{ required: true }]}
+          name="price"
+          trigger={"onChangeText"}
+          validateTrigger={"onChangeText"}
+        >
+          <TextInput
+            keyboardType="numeric"
+            label={"Price"}
+            ref={ref_price}
+            mode="outlined"
+            placeholder={"Enter Price"}
+          />
+        </RcFieldForm.Field>
+
+        <RcFieldForm.Field
+          rules={[{ required: true }]}
           name="quantity"
           trigger={"onChangeText"}
           validateTrigger={"onChangeText"}
         >
           <TextInput
+            keyboardType="numeric"
             label={"Quantity"}
             ref={ref_quantity}
             mode="outlined"

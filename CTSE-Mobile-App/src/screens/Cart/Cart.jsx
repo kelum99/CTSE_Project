@@ -121,7 +121,6 @@ const Item = ({ item }) => {
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <View style={{ padding: "5%" }}>
             <Text variant="titleMedium">{item.itemName}</Text>
-            <Text variant="bodyMedium">1kg @ Rs 500 </Text>
           </View>
           <IconButton
             icon="trash-can"
@@ -274,7 +273,7 @@ const Cart = ({ navigation }) => {
       />
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text style={{ fontSize: 22, padding: "6%" }}>Total Amount </Text>
-        <Text style={{ fontSize: 22, padding: "6%" }}>{total} </Text>
+        <Text style={{ fontSize: 22, padding: "6%" }}>Rs {total} </Text>
       </View>
       <Button mode="contained" onPress={() => console.log("Pressed")}>
         Checkout

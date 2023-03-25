@@ -17,7 +17,7 @@ const PaymentScreen = ({ navigation }) => {
       if (res) {
         form.resetFields();
         navigation.navigate("PayListScreen");
-        event.emmit("GET_CARDS");
+        event.emit("GET_CARDS");
       }
     } catch (error) {
       console.log("validation faild", error);
@@ -97,6 +97,8 @@ const PaymentScreen = ({ navigation }) => {
               { required: true },
               {
                 pattern: /^\d{16}$/,
+                max: 16,
+                min: 16,
                 message: "Please enter a valid 16-digit card number",
               },
             ]}
@@ -117,6 +119,7 @@ const PaymentScreen = ({ navigation }) => {
               label="Card Number"
               placeholder="Enter your card number"
               keyboardType="numeric"
+              maxLength={16}
             />
           </Field>
           {!validCardNumber && (
@@ -165,6 +168,7 @@ const PaymentScreen = ({ navigation }) => {
               mode="outlined"
               label="CVV"
               placeholder="XXX"
+              maxLength={3}
             />
           </RcFieldForm.Field>
         </RcFieldForm>
