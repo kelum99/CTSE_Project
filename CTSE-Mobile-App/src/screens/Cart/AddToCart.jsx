@@ -82,9 +82,6 @@ const AddToCart = ({ navigation, route }) => {
       <Card style={styles.descCard} mode="elevated" elevation={10}>
         <Card.Content>
           <Text variant="headlineLarge">{fruit.name}</Text>
-          {/* <Text variant="headlineSmall" style={styles.cardSubtitle}>
-            1pc (500g - 700g)
-          </Text> */}
           <Text variant="bodyLarge" style={{ paddingTop: "5%" }}>
             {fruit.description}
           </Text>

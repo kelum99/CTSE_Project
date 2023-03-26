@@ -1,10 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useCallback, useEffect, useState } from "react";
-import { SafeAreaView, ScrollView, View } from "react-native";
+import { SafeAreaView, ScrollView, View, StyleSheet } from "react-native";
 import { Button, Card, Text } from "react-native-paper";
 import { useUserInfo, useEvents } from "../services/Application";
 import { getAllProduct } from "../services/SellerService";
 import { Searchbar } from "react-native-paper";
+import { FAB } from "react-native-paper";
 
 const HomeScreen = ({ navigation }) => {
   const user = useUserInfo();
@@ -106,8 +107,27 @@ const HomeScreen = ({ navigation }) => {
           )}
         </View>
       </ScrollView>
+      <FAB
+        icon="help"
+        style={styles.fab}
+        onPress={() =>
+          navigation.navigate("Cart", {
+            screen: "FAQ",
+          })
+        }
+      />
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  fab: {
+    position: "absolute",
+    margin: 16,
+    right: 0,
+    bottom: 0,
+    borderRadius: 100,
+  },
+});
 
 export default HomeScreen;
